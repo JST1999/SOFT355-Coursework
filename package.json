@@ -4,6 +4,11 @@
     "scripts": {
         "start": "node express-server.js"
     },
+    "dependencies": {
+        "express": "4.17.1",
+        "mongoose": "5.7.13",
+        "websocket": "1.0.30"
+    },
     "author": "Jason Tungay",
     "license": "ISC"
 }

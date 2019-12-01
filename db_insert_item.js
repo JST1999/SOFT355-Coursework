@@ -1,4 +1,4 @@
-var mongoose = require("./node_modules/mongoose");
+var mongoose = require("mongoose");
 var schemas = require("./schemas");
 
 var uri = "mongodb+srv://jtungay:Sekiro2019@cluster0-xwkkp.mongodb.net/test?retryWrites=true&w=majority";

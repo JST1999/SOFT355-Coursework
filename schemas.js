@@ -1,4 +1,4 @@
-var mongoose = require("./node_modules/mongoose");
+var mongoose = require("mongoose");
 
 var Item = mongoose.model("Item", {
 	name: String,
