@@ -1,4 +1,4 @@
-var mongoose = require("mongoose");
+var mongoose = require("./node_modules/mongoose");
 
 var uri = "mongodb+srv://jtungay:Sekiro2019@cluster0-xwkkp.mongodb.net/test?retryWrites=true&w=majority";
 var port = 9000;
@@ -7,7 +7,7 @@ var port = 9000;
 var schemas = require("./schemas");
 
 // Import Express and initialise the application.
-express = require("express");
+express = require("./node_modules/express");
 var app = express();
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
