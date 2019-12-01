@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 var uri = "mongodb+srv://jtungay:Sekiro2019@cluster0-xwkkp.mongodb.net/test?retryWrites=true&w=majority";
-var port = 9000;
+var port = process.env.PORT || 8080
 
 // Schemas.js, so we can get the card and game models from there
 var schemas = require("./schemas");
@@ -42,5 +42,5 @@ app.listen(port, function() {
 	mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}).then((test) => {
 		console.log("Connected to DB");
 	});
-	console.log("Listening on 9000...");
+	console.log("Listening...");
 })
