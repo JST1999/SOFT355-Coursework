@@ -1,0 +1,9 @@
+{
+    "name": "saywatt",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "express-server.js"
+    },
+    "author": "Jason Tungay",
+    "license": "ISC"
+}
