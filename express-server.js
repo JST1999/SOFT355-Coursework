@@ -33,6 +33,14 @@ app.get("/item/:id", function (request, response) {
 	});
 });
 
+app.get("/searchitems/:querystr", function (request, response) {
+	var query = request.params.querystr;//can also do "/"+querystr+"/gi"
+	schemas.Item.find({"name": {$regex:query,$options:"$gi"}}, function(err, item) {
+		response.setHeader("Content-Type", "application/json");
+		response.send(item);
+	});
+});
+
 app.get("/", function(request, response) {
 	response.render("index");
 });

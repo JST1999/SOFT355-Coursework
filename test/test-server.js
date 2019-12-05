@@ -44,6 +44,34 @@ describe('Items', function() {
         done();
       });
   });
+  it('should list a ALL items on /searchitems/:querystr GET', function(done) {
+    var queryTest = "sekiro";
+    chai.request(server)
+      .get('/searchitems/'+queryTest)
+      .end(function(err, res){
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('array');
+        res.body[0].should.have.property('_id');
+        res.body[0].should.have.property('name');
+        res.body[0].should.have.property('description');
+        res.body[0].should.have.property('price');
+        res.body[0].should.have.property('quantity');
+        res.body[0].should.have.property('category');
+        res.body[0].should.have.property('reviews');
+        res.body[0].name.should.equal("Sekiro Shadows Die Twice [Xbox]");
+        res.body[1].should.have.property('_id');
+        res.body[1].should.have.property('name');
+        res.body[1].should.have.property('description');
+        res.body[1].should.have.property('price');
+        res.body[1].should.have.property('quantity');
+        res.body[1].should.have.property('category');
+        res.body[1].should.have.property('reviews');
+        res.body[1].name.should.equal("Sekiro Shadows Die Twice [PlayStation4]");
+        done();
+      });
+  });
+
   //it('should add a SINGLE item on /item POST'); Do in the future
   //it('should update a SINGLE item on /item/<id> PUT');
   //it('should delete a SINGLE item on /item/<id> DELETE');
