@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 var uri = "mongodb+srv://jtungay:Sekiro2019@cluster0-xwkkp.mongodb.net/test?retryWrites=true&w=majority";
-var port = process.env.PORT || 8080
+var port = process.env.PORT || 8080	//process.env.PORT is for heroku
 
 // Schemas.js, so we can get the card and game models from there
 var schemas = require("./schemas");
@@ -41,6 +41,7 @@ app.get("/searchitems/:querystr", function (request, response) {
 	});
 });
 
+//sends index.html
 app.get("/", function(request, response) {
 	response.render("index");
 });
@@ -53,4 +54,4 @@ app.listen(port, function() {
 	console.log("Listening...");
 })
 
-module.exports = app;
+module.exports = app;	//for testing

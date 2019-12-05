@@ -15,7 +15,6 @@ body {
 	height: 100%;
 	font-family: 'Josefin Sans', sans-serif;
 	-webkit-font-smoothing: antialiased;
-	font-smoothing: antialiased;
 }
 
 h1,
@@ -2417,4 +2416,16 @@ ol {
 	.social-links a span {
 		display: none;
 	}
+}
+
+#searchResultsContainer {
+	background-image: url("../images/halo-reach.jpg");
+}
+
+.searchResultImage {
+	float: right;
+}
+
+.searchResultText {
+	float: left;
 }
