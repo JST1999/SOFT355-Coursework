@@ -2,10 +2,14 @@
     "name": "saywatt",
     "version": "1.0.0",
     "scripts": {
-        "start": "node express-server.js"
+        "start": "node express-server.js",
+        "test": "mocha || true"
     },
     "dependencies": {
+        "chai": "^4.2.0",
+        "chai-http": "^4.3.0",
         "express": "4.17.1",
+        "mocha": "^6.2.2",
         "mongoose": "5.7.13",
         "websocket": "1.0.30"
     },

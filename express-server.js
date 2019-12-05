@@ -44,3 +44,5 @@ app.listen(port, function() {
 	});
 	console.log("Listening...");
 })
+
+module.exports = app;
