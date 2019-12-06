@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+        <style>
+            /* Your CSS code goes here. */
+        </style>
+
+        <script>
+            $(window).on("load", function() {
+                // Your JS code goes here.
+            });
+        </script>
+    </head>
+
+    <body>
+        <!-- Do not edit this section. -->
+        <div id="mocha"></div>
+    
+        <script src="https://unpkg.com/chai/chai.js"></script>
+        <script src="https://unpkg.com/mocha/mocha.js"></script>
+    
+        <script class="mocha-init">
+            mocha.setup('tdd');
+            mocha.checkLeaks();
+        </script>
+        
+        <script src="./test-front.js"></script>
+        
+        <script class="mocha-exec">
+            mocha.run();
+        </script>
+        
+        <!-- Your HTML code goes here. -->
+
+    </body>
+</html>

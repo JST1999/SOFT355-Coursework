@@ -24,7 +24,28 @@ function search(){
     var query = vars.querystr;
     var uri = url + "searchitems/" + query;
     $.get(uri, {}, function(res) {
-        var text = "<li class='list-group-item'>"+res+"</li>"
-        $("#searchResultsOutput").html(text);
+        appendText(res);
     });
+}
+
+function appendText(res){
+    var text = "";
+    for (var i = 0; i < res.length; i++){
+        text += '<li class="list-group-item">' +
+                  '<div class="media align-items-lg-center flex-column flex-lg-row p-3">' +
+                      '<div class="searchResultText" class="media-body order-2 order-lg-1">' +
+                          '<h5 class="mt-0 font-weight-bold mb-2">'+res[i].name+'</h5>' +
+                          '<p class="font-italic text-muted mb-0 small">'+res[i].description+'</p>' +
+                          '<div class="d-flex align-items-center justify-content-between mt-1">' +
+                              '<h6 class="font-weight-bold my-2">'+res[i].price+'</h6>' +
+                          '</div>' +
+                      '</div>' +
+                      '<img class="searchResultImage" src="'+'product-images/'+res[i].filename+'" alt="Generic placeholder image" width="100" class="ml-lg-5 order-1 order-lg-2">' +
+                  '</div>' +
+              '</li>'
+
+    }
+
+    //</li>var text = "<li class='list-group-item'>"+res+"</li>"
+    $("#searchResultsOutput").html(text);
 }
