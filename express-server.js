@@ -14,6 +14,23 @@ app.use(function(req, res, next) {
 	next();
 });
 
+var bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer(); 
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
+var morgan = require('morgan');
+var bcrypt = require('bcrypt');
+var sha256 = require('sha256');
+
+var db;
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(upload.array());
+app.use(cookieParser());
+app.use(session({secret: "Your secret key"}));
+
 app.use(express.static(__dirname));
 
 app.get("/listitems", function(request, response) {
@@ -46,6 +63,61 @@ app.get("/", function(request, response) {
 	response.render("index");
 });
 
+function createHash(password, salt){//as a function so i can run tests
+	return sha256.x2(password+salt);
+}
+function findUser(email){//as a function so i can run tests
+	return false
+	/*schemas.User.findOne({"email": email}, function(err, item) {
+		if (item === null){
+			return false;
+		}
+		else{
+			return true;
+		}
+	});*/
+}
+app.post('/signup', function(req, res){
+	var fistname = req.body.firstname;
+	var lastname = req.body.lastname;
+	var email = req.body.email;
+	var password = req.body.password;
+	var streetName = req.body.streetName;
+	var city = req.body.city;
+	var county = req.body.county;
+	var postcode = req.body.postcode;
+
+	var foundUser = findUser(email);
+	if (foundUser === true){
+		res.render('signup', {
+			message: "User Already Exists! Login or choose another user id"});
+	} else{
+		const salt = bcrypt.genSaltSync();
+		var hash = createHash(password, salt);
+
+		var Item = new schemas.Item({
+			"fistname": fistname,
+			"lastname": lastname,
+			"email": email,
+			"password": hash,
+			"salt": salt,
+			"streetName": streetName,
+			"city": city,
+			"county": county,
+			"postcode": postcode
+		});
+		var db = mongoose.collection("users");
+		var usersCollection = db;
+		usersCollection.insert(Item);
+		db.users.insert(Item);
+		res.status("200");
+   		res.send("Done");
+	}
+	
+	//req.session.user = newUser;
+	//res.redirect('/protected_page');
+});
+
 // Run the server.
 app.listen(port, function() {
 	mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}).then((test) => {
@@ -54,4 +126,10 @@ app.listen(port, function() {
 	console.log("Listening...");
 })
 
-module.exports = app;	//for testing
+//for testing
+module.exports = app;
+module.exports.createHash = createHash;
+module.exports.findUser = findUser;
+module.exports.bcrypt = bcrypt;
+
+console.log(findUser("asdf@gmail.com"));
