@@ -4,6 +4,17 @@ var url = hashes.substring(0, num);//these 3 are so that the website can be on a
 
 $(document).ready(function() {
     search();
+
+    $("#showLogin").click(function(){
+        $("#loginForm").fadeIn();
+        $("#loginForm").css({"visibility":"visible","display":"block"});
+        console.log("showLogin clicked");
+    });
+    
+    $("#hideLogin").click(function(){
+        $("#loginForm").fadeOut();
+        $("#loginForm").css({"visibility":"hidden","display":"none"});
+    });
 });
 
 $("#searchForm").submit(function(e) {	//This and document.ready will use the url query
@@ -11,7 +22,7 @@ $("#searchForm").submit(function(e) {	//This and document.ready will use the url
     search();
 });
 
-function search(){
+function search(){  //gets the url and does a get request
     var vars = [], hash;
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
     for(var i = 0; i < hashes.length; i++)
@@ -28,7 +39,7 @@ function search(){
     });
 }
 
-function appendText(res){
+function appendText(res){   //turns the get requests response into html
     var text = "";
     for (var i = 0; i < res.length; i++){
         text += '<li class="list-group-item">' +

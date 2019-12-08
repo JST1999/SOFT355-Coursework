@@ -58,8 +58,7 @@
 <div class="col-xl-4 col-lg-5">
   <div class="user-panel">
     <div class="up-item">
-      <img src="./images/person-icon.png" alt="">
-      <a href="index.html">Sign In</a> or <a href="index.html">Create Account</a>
+      <button id="showLogin"><img src="./images/person-icon.png" alt="">Sign In or Create Account</button>
     </div>
     <div class="up-item">
       <div class="shopping-card">
@@ -70,6 +69,34 @@
     </div>
   </div>
 </div>
+
+<!-- login/signup popup -->
+<div id="loginForm">
+  <button id="hideLogin">X</button>
+
+  <form id="signIn">
+    <p>Login</p>
+    <input type="text" class="inputBox" id="loginLI" name="email" placeholder="Email">
+    <input type="password" class="inputBox" id="passwordLI" name="password" placeholder="********">
+  </form>
+  <button class="signInUpBTNs" id="loginBTN">Login</button>
+
+  <br />
+  <form id="signUp">
+      <p>Sign Up</p>
+      <input type="text" class="inputBox" id="loginSU" name="email" placeholder="Email">
+      <input type="password" class="inputBox" id="passwordSU" name="password" placeholder="********">
+      <input type="password" class="inputBox" id="confirmPasswordSU" name="confirmPassword" placeholder="Confirm ********">
+      <input type="text" class="inputBox" id="streetNameSU" name="streetName" placeholder="Street Name">
+      <input type="text" class="inputBox" id="citySU" name="city" placeholder="City">
+      <input type="text" class="inputBox" id="countySU" name="county" placeholder="County">
+      <input type="text" class="inputBox" id="postCodeSU" name="postCode" placeholder="Post Code">
+      <input type="text" class="inputBox" id="firstnameSU" name="firstname" placeholder="Firstname">
+      <input type="text" class="inputBox" id="lastnameSU" name="lastname" placeholder="Lastname">
+  </form>
+  <button class="signInUpBTNs" id="signUpBTN">Create</button>
+</div>
+<!-- login/signup popup end -->
 
 </div>
 </div>
