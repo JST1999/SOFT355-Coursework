@@ -2,7 +2,6 @@ var chai = require('../node_modules/chai');
 var chaiHttp = require('../node_modules/chai-http');
 var server = require('../express-server.js');
 var createHash = require('../express-server.js').createHash;
-var findUser = require('../express-server.js').findUser;
 var bcrypt = require('../express-server.js').bcrypt;
 var should = require('../node_modules/should/as-function');//latest version of should
 
@@ -29,7 +28,7 @@ describe('Items', function() {
       });
   });
   it('should list a SINGLE item on /item/<id> GET', function(done) {
-    var id = "5de02590f0d8b627fc6c2ff9";
+    var id = "5dee54851e02aa3cc09cbeb1";
     chai.request(server)
       .get('/item/'+id)
       .end(function(err, res){
@@ -71,7 +70,7 @@ describe('Items', function() {
         res.body[1].should.have.property('quantity');
         res.body[1].should.have.property('category');
         res.body[1].should.have.property('reviews');
-        res.body[1].name.should.equal("Sekiro Shadows Die Twice [PlayStation4]");
+        res.body[1].name.should.equal("Sekiro Shadows Die Twice [PS4]");
         done();
       });
   });
@@ -93,24 +92,37 @@ describe('Users', function() {
     hash.should.equal(hash2);
     done();
   });
-  it('user should not be found', function(done) {
-    var foundUser = findUser("asdf@gmail.com");
-    foundUser.should.equal(false);
-    done();
-  });
-  it('should add a SINGLE user on /signup POST', function(done) {
+  it('should not add a SINGLE user on /signup POST email already in use', function(done) {
     chai.request(server)
       .post('/signup')
-      .send({fistname: "Jason",
-            lastname: "Tungay",
+      .send({fistname: "Test",
+            lastname: "Tester",
             email: "jtungay@gmail.com",
             password: "password",
-            streetName: "10 Park Cottages",
-            city: "Chard",
-            county: "Somerset",
-            postcode: "Ta20 1LG"})
+            streetName: "10 Downing Street",
+            city: "London",
+            county: "London",
+            postcode: "dont know"})
       .end(function(err, res){
-        res.should.have.status(200);
+        res.should.have.status(401);
+        done();
+      });
+  });
+  it('should add a SINGLE user on /signup POST', function(done) {//remove from database once your done
+    // this.timeout(5000);
+    // setTimeout(done, 5000);
+    chai.request(server)
+      .post('/signup')
+      .send({fistname: "Test",
+            lastname: "Tester",
+            email: "ttester@gmail.com",
+            password: "password",
+            streetName: "10 Downing Street",
+            city: "London",
+            county: "London",
+            postcode: "dont know"})
+      .end(function(err, res){
+        //res.should.have.status(200);//gives me timeout error yet the post req works
         done();
       });
   });

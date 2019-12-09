@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-var Item = mongoose.model("Item", {
+var Item = mongoose.model("Item", {//items in database
 	name: String,
 	filename: String,
 	description: String,
@@ -11,7 +11,7 @@ var Item = mongoose.model("Item", {
 });
 module.exports.Item = Item;
 
-var User = mongoose.model("User", {
+var User = mongoose.model("User", {//users in database
 	fistname: String,
 	lastname: String,
 	email: String,
