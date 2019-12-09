@@ -13,4 +13,6 @@ var Item = new schemas.Item({
 	"quantity": 10,
 	"reviews": []
 });
-Item.save();
+Item.save().then((test) => {
+	console.log("Added to DB");
+});

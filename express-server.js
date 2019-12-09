@@ -14,6 +14,21 @@ app.use(function(req, res, next) {
 	next();
 });
 
+var bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer(); 
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
+var morgan = require('morgan');
+var bcrypt = require('bcrypt');
+var sha256 = require('sha256');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(upload.array());
+app.use(cookieParser());
+app.use(session({secret: "Your secret key"}));
+
 app.use(express.static(__dirname));
 
 app.get("/listitems", function(request, response) {
@@ -33,6 +48,13 @@ app.get("/item/:id", function (request, response) {
 	});
 });
 
+// app.get("/getuseremail/:email", function (request, response) {
+// 	schemas.User.find({"email": request.params.email}, function(err, user) {
+// 		response.setHeader("Content-Type", "application/json");
+// 		response.send(user);
+// 	});
+// });
+
 app.get("/searchitems/:querystr", function (request, response) {
 	var query = request.params.querystr;//can also do "/"+querystr+"/gi"
 	schemas.Item.find({"name": {$regex:query,$options:"$gi"}}, function(err, item) {
@@ -46,6 +68,53 @@ app.get("/", function(request, response) {
 	response.render("index");
 });
 
+function createHash(password, salt){//as a function so i can run tests
+	return sha256.x2(password+salt);//one of my fav parts
+}
+app.post('/signup', function(req, res){
+	var fistname = req.body.firstname;
+	var lastname = req.body.lastname;
+	var email = req.body.email;
+	var password = req.body.password;
+	var streetName = req.body.streetName;
+	var city = req.body.city;
+	var county = req.body.county;
+	var postcode = req.body.postcode;
+
+	schemas.User.find({"email": email}, function(err, item) {
+		if (item.length != 0){
+			res.status("401");
+			res.json({
+				message: "User Already Exists! Login or choose another user id"
+			});
+		} else{
+			const salt = bcrypt.genSaltSync();
+			var hash = createHash(password, salt);
+	
+			var User = new schemas.User({
+				"fistname": fistname,
+				"lastname": lastname,
+				"email": email,
+				"password": hash,
+				"salt": salt,
+				"streetName": streetName,
+				"city": city,
+				"county": county,
+				"postcode": postcode
+			});
+			User.save().then((test) => {
+				res.status("200");
+				res.json({
+					message: "Added"
+				});
+			});
+		}
+	});
+	
+	//req.session.user = newUser;
+	//res.redirect('/protected_page');
+});
+
 // Run the server.
 app.listen(port, function() {
 	mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}).then((test) => {
@@ -54,4 +123,7 @@ app.listen(port, function() {
 	console.log("Listening...");
 })
 
-module.exports = app;	//for testing
+//for testing
+module.exports = app;
+module.exports.createHash = createHash;
+module.exports.bcrypt = bcrypt;
