@@ -20,7 +20,6 @@ var upload = multer();
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
-var bcrypt = require('bcrypt');
 var sha256 = require('sha256');
 
 app.use(bodyParser.json());
@@ -83,7 +82,13 @@ app.post('/signup', function(req, res){
 				message: "User Already Exists! Login or choose another user id"
 			});
 		} else{
-			const salt = bcrypt.genSaltSync();
+			var salt = '';
+			var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$';
+			var charactersLength = characters.length;
+			for ( var i = 0; i < 29; i++ ) {
+				salt += characters.charAt(Math.floor(Math.random() * charactersLength));
+			}
+
 			var hash = createHash(password, salt);
 			
 			var User = new schemas.User({
@@ -126,4 +131,3 @@ app.listen(port, function() {
 //for testing
 module.exports = app;
 module.exports.createHash = createHash;
-module.exports.bcrypt = bcrypt;
