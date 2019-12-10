@@ -48,7 +48,7 @@ app.get("/item/:id", function (request, response) {
 	});
 });
 
-// app.get("/getuseremail/:email", function (request, response) {
+// app.get("/getuseremail/:email", function (request, response) {	//unneeded and a security flaw - it was used to test something - hanging on to it just in case
 // 	schemas.User.find({"email": request.params.email}, function(err, user) {
 // 		response.setHeader("Content-Type", "application/json");
 // 		response.send(user);
@@ -63,13 +63,8 @@ app.get("/searchitems/:querystr", function (request, response) {
 	});
 });
 
-//sends index.html
-app.get("/", function(request, response) {
-	response.render("index");
-});
-
-function createHash(password, salt){//as a function so i can run tests
-	return sha256.x2(password+salt);//one of my fav parts
+function createHash(password, salt){//as a function so i can run tests - also so signup and login can use it
+	return sha256.x2(password+salt);//one of my fav parts - x2 means that it is double hashed
 }
 app.post('/signup', function(req, res){
 	var fistname = req.body.firstname;
@@ -80,7 +75,7 @@ app.post('/signup', function(req, res){
 	var city = req.body.city;
 	var county = req.body.county;
 	var postcode = req.body.postcode;
-
+	
 	schemas.User.find({"email": email}, function(err, item) {
 		if (item.length != 0){
 			res.status("401");
@@ -90,7 +85,7 @@ app.post('/signup', function(req, res){
 		} else{
 			const salt = bcrypt.genSaltSync();
 			var hash = createHash(password, salt);
-	
+			
 			var User = new schemas.User({
 				"fistname": fistname,
 				"lastname": lastname,
@@ -105,7 +100,7 @@ app.post('/signup', function(req, res){
 			User.save().then((test) => {
 				res.status("200");
 				res.json({
-					message: "Added"
+					message: "Added successfully"
 				});
 			});
 		}
@@ -113,6 +108,11 @@ app.post('/signup', function(req, res){
 	
 	//req.session.user = newUser;
 	//res.redirect('/protected_page');
+});
+
+//sends index.html
+app.get("/", function(request, response) {
+	response.render("index");
 });
 
 // Run the server.

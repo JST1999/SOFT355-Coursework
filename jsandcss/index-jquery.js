@@ -8,12 +8,52 @@ $(document).ready(function() {
     $("#showLogin").click(function(){
         $("#loginForm").fadeIn();
         $("#loginForm").css({"visibility":"visible","display":"block"});
-        console.log("showLogin clicked");
     });
     
     $("#hideLogin").click(function(){
         $("#loginForm").fadeOut();
         $("#loginForm").css({"visibility":"hidden","display":"none"});
+    });
+
+    $("#signUpBTN").click(function(){
+        var email = $("#emailSU").val();
+        var password = $("#passwordSU").val();
+        var conPassword = $("#confirmPasswordSU").val();
+        var streetName = $("#streetNameSU").val();
+        var city = $("#citySU").val();
+        var county = $("#countySU").val();
+        var postcode = $("#postcodeSU").val();
+        var firstname = $("#firstnameSU").val();
+        var lastname = $("#lastnameSU").val();
+
+        if(email.length === 0 || password.length === 0 || conPassword.length === 0 || streetName.length === 0 || city.length === 0 || county.length === 0 || postcode.length === 0 || firstname.length === 0 || lastname.length === 0){
+            $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>All inputs need to be filled in</p>");
+        } else{
+            if(password != conPassword){
+                $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>Passwords don't match</p>");
+            } else{
+                if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) === false){
+                    $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>Invalid email</p>");
+                } else{
+                    $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>Waiting</p>");
+                    var uri = url+"signup";
+                    $.post(uri, { 
+                        firstname: firstname,
+                        lastname: lastname,
+                        email: email,
+                        password: password,
+                        streetName: streetName,
+                        city: city,
+                        county: county,
+                        postcode: postcode
+                    }, function(data, status) { 
+                        $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>"+data.message+"</p>");
+                    }).fail(function(xhr, status, error) {
+                        $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>An account with that email already exists</p>");
+                    });
+                }
+            }
+        }
     });
 });
 
