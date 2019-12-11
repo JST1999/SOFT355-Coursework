@@ -6,7 +6,7 @@
     },
     "scripts": {
         "start": "node express-server.js",
-        "test": "mocha || true --exit"
+        "test": "mocha || true"
     },
     "dependencies": {
         "chai": "^4.2.0",
