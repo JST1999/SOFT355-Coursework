@@ -2,7 +2,7 @@ var chai = require('../node_modules/chai');
 var chaiHttp = require('../node_modules/chai-http');
 var server = require('../express-server.js');
 var createHash = require('../express-server.js').createHash;
-var bcrypt = require('../express-server.js').bcrypt;
+var createSalt = require('../express-server.js').createSalt;
 var should = require('../node_modules/should/as-function');//latest version of should
 
 var should = chai.should();
@@ -83,7 +83,7 @@ describe('Items', function() {
 describe('Users', function() {
   it('should generate hashes correctly', function(done) {
     var password = "password123";
-    var salt = bcrypt.genSaltSync();
+    var salt = createSalt();
     var hash = createHash(password, salt);
     var password2 = "password123";
     var salt2 = salt

@@ -65,6 +65,15 @@ app.get("/searchitems/:querystr", function (request, response) {
 function createHash(password, salt){//as a function so i can run tests - also so signup and login can use it
 	return sha256.x2(password+salt);//one of my fav parts - x2 means that it is double hashed
 }
+function createSalt(){//seperate function for tests
+	var salt = '';
+	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$';
+	var charactersLength = characters.length;
+	for ( var i = 0; i < 29; i++ ) {
+		salt += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	return salt;
+}
 app.post('/signup', function(req, res){
 	var fistname = req.body.firstname;
 	var lastname = req.body.lastname;
@@ -82,13 +91,7 @@ app.post('/signup', function(req, res){
 				message: "User Already Exists! Login or choose another user id"
 			});
 		} else{
-			var salt = '';
-			var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$';
-			var charactersLength = characters.length;
-			for ( var i = 0; i < 29; i++ ) {
-				salt += characters.charAt(Math.floor(Math.random() * charactersLength));
-			}
-
+			var salt = createSalt();
 			var hash = createHash(password, salt);
 			
 			var User = new schemas.User({
@@ -131,3 +134,4 @@ app.listen(port, function() {
 //for testing
 module.exports = app;
 module.exports.createHash = createHash;
+module.exports.createSalt = createSalt;
