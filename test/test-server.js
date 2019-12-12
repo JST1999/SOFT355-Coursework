@@ -34,16 +34,15 @@ describe('Items', function() {
       .end(function(err, res){
         res.should.have.status(200);
         res.should.be.json;
-        res.body.should.be.a('array');
-        res.body[0].should.have.property('_id');//its still an array, fix?
-        res.body[0].should.have.property('name');
-        res.body[0].should.have.property('description');
-        res.body[0].should.have.property('price');
-        res.body[0].should.have.property('quantity');
-        res.body[0].should.have.property('category');
-        res.body[0].should.have.property('reviews');
-        res.body[0]._id.should.equal(id);
-        res.body[0].name.should.equal("Sekiro Shadows Die Twice [Xbox]");
+        res.body.should.have.property('_id');//its still an array, fix?
+        res.body.should.have.property('name');
+        res.body.should.have.property('description');
+        res.body.should.have.property('price');
+        res.body.should.have.property('quantity');
+        res.body.should.have.property('category');
+        res.body.should.have.property('reviews');
+        res.body._id.should.equal(id);
+        res.body.name.should.equal("Sekiro Shadows Die Twice [Xbox]");
         done();
       });
   });
@@ -74,10 +73,6 @@ describe('Items', function() {
         done();
       });
   });
-
-  //it('should add a SINGLE item on /item POST'); Do in the future
-  //it('should update a SINGLE item on /item/<id> PUT');
-  //it('should delete a SINGLE item on /item/<id> DELETE');
 });
 
 describe('Users', function() {
@@ -108,24 +103,42 @@ describe('Users', function() {
         done();
       });
   });
-  it('should add a SINGLE user on /signup POST', function(done) {//remove from database once your done
-    // this.timeout(5000);
-    // setTimeout(done, 5000);
+  // it('should add a SINGLE user on /signup POST', function(done) {//remove from database once your done
+  //   // this.timeout(5000);
+  //   // setTimeout(done, 5000);
+  //   chai.request(server)
+  //     .post('/signup')
+  //     .send({fistname: "Test",
+  //           lastname: "Tester",
+  //           email: "ttester@gmail.com",
+  //           password: "password",
+  //           streetName: "10 Downing Street",
+  //           city: "London",
+  //           county: "London",
+  //           postcode: "dont know"})
+  //     .end(function(err, res){
+  //       //res.should.have.status(200);//gives me timeout error yet the post req works
+  //       done();
+  //     });
+  // });
+  it('should confirm login details of SINGLE user on /login POST', function(done) {
     chai.request(server)
-      .post('/signup')
-      .send({fistname: "Test",
-            lastname: "Tester",
-            email: "ttester@gmail.com",
-            password: "password",
-            streetName: "10 Downing Street",
-            city: "London",
-            county: "London",
-            postcode: "dont know"})
+      .post('/login')
+      .send({email: "jtungay@gmail.com",
+            password: "password"})
       .end(function(err, res){
-        //res.should.have.status(200);//gives me timeout error yet the post req works
+        res.should.have.status(200);
         done();
       });
   });
-  //it('should update a SINGLE item on /item/<id> PUT');
-  //it('should delete a SINGLE item on /item/<id> DELETE');
+  it('should NOT confirm login details of SINGLE user on /login POST', function(done) {
+    chai.request(server)
+      .post('/login')
+      .send({email: "jtungay@gmail.com",
+            password: "pword"})
+      .end(function(err, res){
+        res.should.have.status(401);
+        done();
+      });
+  });
 });
