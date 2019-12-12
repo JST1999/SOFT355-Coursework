@@ -77,7 +77,7 @@ function createSalt(){//seperate function for tests
 	return salt;
 }
 app.post('/signup', function(req, res){
-	var fistname = req.body.firstname;
+	var firstname = req.body.firstname;
 	var lastname = req.body.lastname;
 	var email = req.body.email;
 	var password = req.body.password;
@@ -98,7 +98,7 @@ app.post('/signup', function(req, res){
 				var hash = createHash(password, salt);
 				
 				var User = new schemas.User({
-					"fistname": fistname,
+					"firstname": firstname,
 					"lastname": lastname,
 					"email": email,
 					"password": hash,
@@ -141,16 +141,14 @@ app.post('/login', function(req, res){
 						message: "Invalid Email or Password"
 					});
 				} else{
+					user[0].password = "";
+					user[0].salt = "";
 					res.status("200");
-					res.json({
-						message: "All good"
-					});
+					res.send(user);
 				}
 			}
 		});
 	}
-	//req.session.user = newUser;
-	//res.redirect('/protected_page');
 });
 
 //sends index.html

@@ -12,7 +12,7 @@ var Item = mongoose.model("Item", {//items in database
 module.exports.Item = Item;
 
 var User = mongoose.model("User", {//users in database
-	fistname: String,
+	firstname: String,
 	lastname: String,
 	email: String,
 	password: String,

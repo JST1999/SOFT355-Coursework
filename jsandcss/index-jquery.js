@@ -72,7 +72,8 @@ $(document).ready(function() {
                     email: email,
                     password: password
                 }, function(data, status) { 
-                    $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>"+data.message+"</p>");
+                    $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>Logged In</p>");
+                    
                 }).fail(function(xhr, status, error) {
                     $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>Invalid Credentials</p>");
                 });
@@ -81,10 +82,6 @@ $(document).ready(function() {
     });
 });
 
-$("#searchForm").submit(function(e) {	//This and document.ready will use the url query
-    e.preventDefault();
-    search();
-});
 
 function search(){  //gets the url and does a get request
     var vars = [], hash;
@@ -102,7 +99,6 @@ function search(){  //gets the url and does a get request
         appendText(res);
     });
 }
-
 function appendText(res){   //turns the get requests response into html
     var text = "";
     for (var i = 0; i < res.length; i++){
@@ -124,3 +120,7 @@ function appendText(res){   //turns the get requests response into html
     //</li>var text = "<li class='list-group-item'>"+res+"</li>"
     $("#searchResultsOutput").html(text);
 }
+$("#searchForm").submit(function(e) {	//This and document.ready will use the url query
+    e.preventDefault();
+    search();
+});

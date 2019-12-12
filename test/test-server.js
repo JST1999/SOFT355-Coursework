@@ -128,6 +128,20 @@ describe('Users', function() {
             password: "password"})
       .end(function(err, res){
         res.should.have.status(200);
+        res.body.should.be.a('array');
+        res.body[0].should.have.property('_id');
+        res.body[0].should.have.property('firstname');
+        res.body[0].should.have.property('lastname');
+        res.body[0].should.have.property('email');
+        res.body[0].should.have.property('password');
+        res.body[0].should.have.property('salt');
+        res.body[0].should.have.property('streetName');
+        res.body[0].should.have.property('city');
+        res.body[0].should.have.property('county');
+        res.body[0].should.have.property('postcode');
+        res.body[0].email.should.equal("jtungay@gmail.com");
+        res.body[0].password.should.equal("");
+        res.body[0].salt.should.equal("");
         done();
       });
   });
