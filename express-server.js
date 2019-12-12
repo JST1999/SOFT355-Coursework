@@ -126,16 +126,16 @@ app.post('/login', function(req, res){
 	var password = req.body.password;
 
 	if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) === true){
-		schemas.User.findOne({"email": email}, function(err, user) {
+		schemas.User.find({"email": email}, function(err, user) {
 			if (user.length === 0){
 				res.status("401");
 				res.json({
 					message: "Invalid Email or Password"
 				});
 			} else{
-				var salt = user.salt;
+				var salt = user[0].salt;
 				var hash = createHash(password, salt);
-				if(hash != user.password){
+				if(hash != user[0].password){
 					res.status("401");
 					res.json({
 						message: "Invalid Email or Password"

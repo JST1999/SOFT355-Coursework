@@ -55,6 +55,30 @@ $(document).ready(function() {
             }
         }
     });
+
+    $("#loginBTN").click(function(){
+        var email = $("#emailLI").val();
+        var password = $("#passwordLI").val();
+
+        if(email.length === 0 || password.length === 0){
+            $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>All inputs need to be filled in</p>");
+        } else{
+            if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) === false){
+                $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>Invalid email</p>");
+            } else{
+                $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>Waiting</p>");
+                var uri = url+"login";
+                $.post(uri, {
+                    email: email,
+                    password: password
+                }, function(data, status) { 
+                    $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>"+data.message+"</p>");
+                }).fail(function(xhr, status, error) {
+                    $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>Invalid Credentials</p>");
+                });
+            }
+        }
+    });
 });
 
 $("#searchForm").submit(function(e) {	//This and document.ready will use the url query
