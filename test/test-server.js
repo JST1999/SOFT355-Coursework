@@ -11,6 +11,8 @@ chai.use(chaiHttp);
 
 describe('Items', function() {
   it('should list ALL items on /listitems GET', function(done) {
+    this.timeout(20000);
+    setTimeout(done, 20000);//my parents internet does this test at around 5000ms
     chai.request(server)
       .get('/listitems')
       .end(function(err, res){
@@ -28,6 +30,8 @@ describe('Items', function() {
       });
   });
   it('should list a SINGLE item on /item/<id> GET', function(done) {
+    this.timeout(20000);
+    setTimeout(done, 20000);
     var id = "5dee54851e02aa3cc09cbeb1";
     chai.request(server)
       .get('/item/'+id)
@@ -47,6 +51,8 @@ describe('Items', function() {
       });
   });
   it('should list a ALL items on /searchitems/:querystr GET', function(done) {
+    this.timeout(20000);
+    setTimeout(done, 20000);
     var queryTest = "sekiro";
     chai.request(server)
       .get('/searchitems/'+queryTest)
@@ -76,7 +82,11 @@ describe('Items', function() {
 });
 
 describe('Users', function() {
+  var sessID = "";
+
   it('should generate hashes correctly', function(done) {
+    this.timeout(20000);
+    setTimeout(done, 20000);
     var password = "password123";
     var salt = createSalt();
     var hash = createHash(password, salt);
@@ -88,6 +98,8 @@ describe('Users', function() {
     done();
   });
   it('should not add a SINGLE user on /signup POST email already in use', function(done) {
+    this.timeout(20000);
+    setTimeout(done, 20000);
     chai.request(server)
       .post('/signup')
       .send({fistname: "Test",
@@ -104,8 +116,8 @@ describe('Users', function() {
       });
   });
   // it('should add a SINGLE user on /signup POST', function(done) {//remove from database once your done
-  //   // this.timeout(5000);
-  //   // setTimeout(done, 5000);
+  //   // this.timeout(20000);
+  //   // setTimeout(done, 20000);
   //   chai.request(server)
   //     .post('/signup')
   //     .send({fistname: "Test",
@@ -121,37 +133,42 @@ describe('Users', function() {
   //       done();
   //     });
   // });
-  it('should confirm login details of SINGLE user on /login POST', function(done) {
+  it('should confirm login details of SINGLE user and return a session ID on /login POST', function(done) {
+    this.timeout(20000);
+    setTimeout(done, 20000);
     chai.request(server)
       .post('/login')
       .send({email: "jtungay@gmail.com",
             password: "password"})
       .end(function(err, res){
         res.should.have.status(200);
-        res.body.should.be.a('array');
-        res.body[0].should.have.property('_id');
-        res.body[0].should.have.property('firstname');
-        res.body[0].should.have.property('lastname');
-        res.body[0].should.have.property('email');
-        res.body[0].should.have.property('password');
-        res.body[0].should.have.property('salt');
-        res.body[0].should.have.property('streetName');
-        res.body[0].should.have.property('city');
-        res.body[0].should.have.property('county');
-        res.body[0].should.have.property('postcode');
-        res.body[0].email.should.equal("jtungay@gmail.com");
-        res.body[0].password.should.equal("");
-        res.body[0].salt.should.equal("");
+        res.should.be.json;
+        res.body.message.should.have.length(64);
+        sessID = res.body.message;
         done();
       });
   });
   it('should NOT confirm login details of SINGLE user on /login POST', function(done) {
+    this.timeout(20000);
+    setTimeout(done, 20000);
     chai.request(server)
       .post('/login')
       .send({email: "jtungay@gmail.com",
             password: "pword"})
       .end(function(err, res){
         res.should.have.status(401);
+        done();
+      });
+  });
+  it('should confirm a logout of SINGLE user on /logout POST', function(done) {
+    this.timeout(20000);
+    setTimeout(done, 20000);
+    chai.request(server)
+      .post('/logout')
+      .send({sessionID: sessID})
+      .end(function(err, res){
+        res.should.have.status(200);
+        res.should.be.json;
         done();
       });
   });

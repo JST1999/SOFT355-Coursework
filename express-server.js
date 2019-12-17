@@ -17,7 +17,7 @@ app.use(function(req, res, next) {
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var upload = multer(); 
-var session = require('express-session');
+//var session = require('express-session');
 var validator = require('express-validator');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.array());
 app.use(cookieParser());
-app.use(session({secret: "Your secret key", saveUninitialized: false, resave: false}));
+//app.use(session({secret: "Your secret key", saveUninitialized: false, resave: false}));
 
 
 app.use(express.static(__dirname));
@@ -64,7 +64,7 @@ app.get("/searchitems/:querystr", function (request, response) {
 	});
 });
 
-function createHash(password, salt){//as a function so i can run tests - also so signup and login can use it
+function createHash(password, salt){//as a function so i can run tests - also so signup and login can use it - also sessionID uses it to make itself longer and unique and 'random'
 	return sha256.x2(password+salt);//one of my fav parts - x2 means that it is double hashed
 }
 function createSalt(){//seperate function for tests
@@ -125,30 +125,50 @@ app.post('/login', function(req, res){
 	var email = req.body.email;
 	var password = req.body.password;
 
-	if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) === true){
-		schemas.User.find({"email": email}, function(err, user) {
-			if (user.length === 0){
+	if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) === true){//email correct format
+		schemas.User.find({"email": email}, function(err, user) {//search for email
+			if (user.length === 0){// email not found
 				res.status("401");
 				res.json({
 					message: "Invalid Email or Password"
 				});
-			} else{
+			} else{//email is found
 				var salt = user[0].salt;
 				var hash = createHash(password, salt);
-				if(hash != user[0].password){
+				if(hash != user[0].password){//password not correct
 					res.status("401");
 					res.json({
 						message: "Invalid Email or Password"
 					});
-				} else{
-					user[0].password = "";
-					user[0].salt = "";
-					res.status("200");
-					res.send(user);
+				} else{//password is correct
+					var Session = new schemas.Session({//create new session
+						sessionID: createHash(user[0]._id, ''),
+						userID: user[0]._id
+					});
+					schemas.Session.insertMany(Session, function(err){
+						if (err) throw err;
+						res.status("200");
+						res.json({
+							message: Session.sessionID
+						});
+					});
 				}
 			}
 		});
 	}
+});
+
+app.post("/logout", function(req, res){
+	schemas.Session.deleteOne({"sessionID": req.body.sessionID}, function(err, sess) {
+		if (err){
+			res.status("500");
+			throw err;
+		}
+		res.status("200");
+		res.json({
+			message: "Session logged out successfully"
+		});
+	});
 });
 
 //sends index.html

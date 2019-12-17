@@ -9,7 +9,7 @@ var Item = mongoose.model("Item", {//items in database
 	quantity: Number,
 	reviews: [String]
 });
-module.exports.Item = Item;
+module.exports.Item = Item;//so express-server can use it
 
 var User = mongoose.model("User", {//users in database
 	firstname: String,
@@ -23,3 +23,9 @@ var User = mongoose.model("User", {//users in database
 	postcode: String
 });
 module.exports.User = User;
+
+var Session = mongoose.model("Session", {//sessions
+	sessionID: String,
+	userID: String
+});
+module.exports.Session = Session;
