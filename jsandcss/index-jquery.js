@@ -77,6 +77,16 @@ $(document).ready(function() {
         $("#loginForm").css({"visibility":"hidden","display":"none"});
     });
 
+    $("#showShoppingCart").click(function(){
+        $("#shoppingCart").fadeIn();
+        $("#shoppingCart").css({"visibility":"visible","display":"block"});
+    });
+    
+    $("#shoppingCart").on("click", "#hideShoppingCart", function(){
+        $("#shoppingCart").fadeOut();
+        $("#shoppingCart").css({"visibility":"hidden","display":"none"});
+    });
+
     $("#loginForm").on("click", "#signUpBTN", function(){
         var email = $("#emailSU").val();
         var password = $("#passwordSU").val();
@@ -198,8 +208,9 @@ $(document).ready(function() {
         //</li>var text = "<li class='list-group-item'>"+res+"</li>"
         $("#searchResultsOutput").html(text);
     }
-    $("#searchForm").submit(function(e) {
-        e.preventDefault();
-        search();
-    });
+});
+
+$("#searchForm").submit(function(e) {
+    e.preventDefault();
+    search();
 });
