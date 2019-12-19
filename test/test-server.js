@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 describe('Items', function() {
   it('should list ALL items on /listitems GET', function(done) {
     this.timeout(20000);
-    setTimeout(done, 20000);//my parents internet does this test at around 5000ms
+    setTimeout(done, 20000);//my parents internet does this test at around 9000ms
     chai.request(server)
       .get('/listitems')
       .end(function(err, res){
@@ -102,7 +102,7 @@ describe('Users', function() {
     setTimeout(done, 20000);
     chai.request(server)
       .post('/signup')
-      .send({fistname: "Test",
+      .send({firstname: "Test",
             lastname: "Tester",
             email: "jtungay@gmail.com",
             password: "password",
@@ -120,7 +120,7 @@ describe('Users', function() {
   //   // setTimeout(done, 20000);
   //   chai.request(server)
   //     .post('/signup')
-  //     .send({fistname: "Test",
+  //     .send({firstname: "Test",
   //           lastname: "Tester",
   //           email: "ttester@gmail.com",
   //           password: "password",
@@ -157,6 +157,21 @@ describe('Users', function() {
             password: "pword"})
       .end(function(err, res){
         res.should.have.status(401);
+        done();
+      });
+  });
+  it('should return details of SINGLE user with a currect session ID on /getuserdetails POST', function(done) {
+    this.timeout(20000);
+    setTimeout(done, 20000);
+    chai.request(server)
+      .post('/getuserdetails')
+      .send({sessionID: sessID})
+      .end(function(err, res){
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.have.property("streetName");
+        res.body.should.have.property("firstname");
+        res.body.should.have.property("email");
         done();
       });
   });
