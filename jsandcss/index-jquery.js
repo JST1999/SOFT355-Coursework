@@ -3,8 +3,26 @@ var num = hashes.indexOf('?');
 var url = hashes.substring(0, num);//these 3 are so that the website can be on any host i.e. localhost, soft355.herokuapp.com
 var userDetails;
 var sessionID;
+var cartItems = [];
 
 $(document).ready(function() {
+    function addToCart(itemID){
+        cartItems.push(itemID);
+        localStorage.setItem("items", JSON.stringify(cartItems));
+    }
+    function removeFromCart(itemID){
+        var index = cartItems.indexOf(itemID);
+        cartItems.splice(index, 1);
+        if(cartItems.length === 0){
+            localStorage.removeItem("items");
+        } else{
+            localStorage.setItem("items", JSON.stringify(cartItems));
+        }
+    }
+    if(localStorage.getItem("items")){
+        cartItems = JSON.parse(localStorage.getItem("items"));
+    }
+
     function addLoginSignupDiv(){
         var text = '<img src="./images/person-icon.png" alt="">Sign In or Create Account';
         $("#showLogin").empty();
@@ -190,6 +208,8 @@ $(document).ready(function() {
     function appendText(res){   //turns the get requests response into html
         var text = "";
         for (var i = 0; i < res.length; i++){
+            var id = res[i]._id;
+
             text += '<li class="list-group-item">' +
             '<div class="media align-items-lg-center flex-column flex-lg-row p-3">' +
             '<div class="searchResultText" class="media-body order-2 order-lg-1">' +
@@ -201,8 +221,12 @@ $(document).ready(function() {
             '</div>' +
             '<img class="searchResultImage" src="'+'product-images/'+res[i].filename+'" alt="Generic placeholder image" width="100" class="ml-lg-5 order-1 order-lg-2">' +
             '</div>' +
-            '</li>'
+            '<button id="'+id+'" class="btn btn-dark rounded-pill py-2 btn-block site-btn sb-white">Add To Cart</button>' +
+            '</li>';
             
+            $("#searchResultsOutput").on("click", "#"+id, function(){
+                addToCart(event.target.id);
+            });
         }
         
         //</li>var text = "<li class='list-group-item'>"+res+"</li>"
