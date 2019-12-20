@@ -6,23 +6,80 @@ var sessionID;
 var cartItems = [];
 
 $(document).ready(function() {
+    function getRequest(uri, i){
+        $.get(uri, {}, function(res) {
+            var textItems = '<tr>'+
+                            '<th scope="row" class="border-0">'+
+                            '<div class="p-2">'+
+                                '<img src="product-images/'+res.filename+'" alt="" width="70" class="img-fluid rounded shadow-sm">'+
+                                '<div class="ml-3 d-inline-block align-middle">'+
+                                '<h5 class="mb-0">'+res.name+'</h5><span class="text-muted font-weight-normal font-italic d-block">Category: '+res.category[0]+'</span>'+
+                                '</div>'+
+                            '</div>'+
+                            '</th>'+
+                            '<td class="border-0 align-middle"><strong>'+res.price+'</strong></td>'+
+                            '<td class="border-0 align-middle"><strong>1</strong></td>'+
+                            '<td class="border-0 align-middle"><button class="removeItem" id="Cart'+i+'"><img src="./images/bin-icon.jpg" alt=""></button></td>'+
+                        '</tr>';
+            $("#cartTableOutput tbody").append(textItems);
+
+            var cost = parseFloat(res.price);
+            var total = $("#itemsTotal").text();
+            total = parseFloat(total.substring(1));//remove first character
+            total += cost;
+            var total2 = "£"+total;
+            $("#itemsTotal").text(total2);
+        });
+    }
+    function updateCartOutput(){
+        $("#shoppingCartTableOutput").empty();
+
+        var numberOfItems = cartItems.length;
+        $("#cartNumberOfItems").text(numberOfItems);
+        
+        var total = 0.0;
+        var total2 = "£"+total;
+        $("#itemsTotal").text(total2);
+        if(numberOfItems === 0){
+            var textNothingHere = '<tr><th scope="row" class="border-0">Nothing here yet</th></tr>';
+            $("#shoppingCartTableOutput").append(textNothingHere);
+        } else{
+            for(var i = 0; i < numberOfItems; i++){
+                var id = cartItems[i];
+                var uri = url + "item/" + id;
+
+                getRequest(uri, i);//cant have get req in the loop
+            }
+        }
+    }
     function addToCart(itemID){
         cartItems.push(itemID);
         localStorage.setItem("items", JSON.stringify(cartItems));
+        updateCartOutput();
     }
-    function removeFromCart(itemID){
-        var index = cartItems.indexOf(itemID);
+    function removeFromCart(index){
+        for (var i = 0; i < cartItems.length; i++){
+            $("#Cart"+i).unbind("click");
+        }
         cartItems.splice(index, 1);
+        console.log(cartItems);
         if(cartItems.length === 0){
             localStorage.removeItem("items");
         } else{
             localStorage.setItem("items", JSON.stringify(cartItems));
         }
+        updateCartOutput();
     }
     if(localStorage.getItem("items")){
         cartItems = JSON.parse(localStorage.getItem("items"));
+        updateCartOutput();
     }
-
+    $("#cartTableOutput").on("click", "button", function(){//all the bin buttons have this click event
+        var id = event.target.id;
+        id = id.substring(id.length - 1, id.length);//remove 'cart' from the end
+        removeFromCart(id);
+    });
+    
     function addLoginSignupDiv(){
         var text = '<img src="./images/person-icon.png" alt="">Sign In or Create Account';
         $("#showLogin").empty();
@@ -219,7 +276,7 @@ $(document).ready(function() {
             '<h6 class="font-weight-bold my-2">£'+res[i].price+'</h6>' +
             '</div>' +
             '</div>' +
-            '<img class="searchResultImage" src="'+'product-images/'+res[i].filename+'" alt="Generic placeholder image" width="100" class="ml-lg-5 order-1 order-lg-2">' +
+            '<img class="searchResultImage" src="product-images/'+res[i].filename+'" alt="Generic placeholder image" width="100" class="ml-lg-5 order-1 order-lg-2">' +
             '</div>' +
             '<button id="'+id+'" class="btn btn-dark rounded-pill py-2 btn-block site-btn sb-white">Add To Cart</button>' +
             '</li>';

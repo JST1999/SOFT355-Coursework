@@ -116,10 +116,10 @@
     <div class="row">
       <div id="shoppingCartOutput" class="col-lg-6 p-5 bg-white rounded shadow-sm mb-5">
         <button id="hideShoppingCart">X</button><br />
-        <h4>Nothing here yet</h4>
+
         <!-- Shopping cart table -->
-        <!-- <div class="table-responsive">
-          <table class="table">
+        <div class="table-responsive">
+          <table id="cartTableOutput" class="table">
             <thead>
               <tr>
                 <th scope="col" class="border-0 bg-light">
@@ -136,8 +136,9 @@
                 </th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
+            <tbody id="shoppingCartTableOutput">
+              <tr><th scope="row" class="border-0">Nothing here yet</th></tr>
+              <!-- <tr>
                 <th scope="row" class="border-0">
                   <div class="p-2">
                     <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-1_zrifhn.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
@@ -149,7 +150,7 @@
                 <td class="border-0 align-middle"><strong>$79.00</strong></td>
                 <td class="border-0 align-middle"><strong>3</strong></td>
                 <td class="border-0 align-middle"><button class="removeItem" id="removeItemi"><img src="./images/bin-icon.jpg" alt=""></button></td>
-              </tr>
+              </tr> -->
             </tbody>
           </table>
         </div>
@@ -177,15 +178,13 @@
             <div class="p-4">
               <p class="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
               <ul class="list-unstyled mb-4">
-                <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong>$390.00</strong></li>
-                <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping and handling</strong><strong>$10.00</strong></li>
                 <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
-                  <h5 class="font-weight-bold">$400.00</h5>
+                  <h5 id="itemsTotal" class="font-weight-bold"></h5>
                 </li>
               </ul><button class="btn btn-dark rounded-pill py-2 btn-block site-btn sb-white">Procceed to checkout</button>
             </div>
           </div>
-        </div> -->
+        </div>
         <!-- end -->
       </div>
     </div>
