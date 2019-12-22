@@ -68,6 +68,20 @@ $(document).ready(function() {
     } else{
         window.location.replace("./");
     }
+
+    $("#confirm").click(function(){
+        var uri = url+"order";
+        $.post(uri, { 
+            sessionID: sessionID,
+            items: cartItems
+        }, function(data, status) {
+            localStorage.removeItem("items");
+            cartItems = [];
+            window.location.replace("./confirmed.html");
+        }).fail(function(xhr, status, error) {
+            $("#errorOutput").text("Error, try again");
+        });
+    });
     
     // $("#searchBTN").click(function(e) {
     //     e.preventDefault();
