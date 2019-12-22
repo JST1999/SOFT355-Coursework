@@ -7,6 +7,8 @@ var should = require('../node_modules/should/as-function');//latest version of s
 
 var should = chai.should();
 
+var sessID = "";
+
 chai.use(chaiHttp);
 
 describe('Items', function() {
@@ -82,8 +84,6 @@ describe('Items', function() {
 });
 
 describe('Users', function() {
-  var sessID = "";
-
   it('should generate hashes correctly', function(done) {
     this.timeout(20000);
     setTimeout(done, 20000);
@@ -175,6 +175,25 @@ describe('Users', function() {
         done();
       });
   });
+});
+
+// describe('Order', function() {
+//   it('should confirm SINGLE order on /order POST', function(done) {
+//     this.timeout(20000);
+//     setTimeout(done, 20000);//my parents internet does this test at around 9000ms
+//     chai.request(server)
+//       .post('/order')
+//       .send({sessionID: sessID,
+//             items: ["5dee54851e02aa3cc09cbeb1", "5dee54e5c8b9b03c58a5d9df", "5dee54851e02aa3cc09cbeb1"]})
+//       .end(function(err, res){
+//         res.should.have.status(200);
+//         res.should.be.json;
+//         done();
+//       });
+//   });
+// });
+
+describe('Logout', function() {//seperate so i can do describe(order) first
   it('should confirm a logout of SINGLE user on /logout POST', function(done) {
     this.timeout(20000);
     setTimeout(done, 20000);

@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="./jsandcss/animate.css">
   <link rel="stylesheet" href="./jsandcss/style.css">
 
-  <script src="./jsandcss/checkout-jquery.js"></script>
+  <script src="./jsandcss/confirmed-jquery.js"></script>
 
 </head>
 <body>
@@ -164,60 +164,12 @@
 </header>
 
 <div class="container">
-  <div id="itemsOutput" class="align-items-left d-flex justify-content-left col-md-6">
-
-    <!-- Shopping cart table -->
-    <div class="table-responsive">
-      <table id="cartTableOutput" class="table">
-        <thead>
-          <tr>
-            <th scope="col" class="border-0 bg-light">
-              <div class="p-2 px-3 text-uppercase">Product</div>
-            </th>
-            <th scope="col" class="border-0 bg-light">
-              <div class="py-2 text-uppercase">Price</div>
-            </th>
-            <th scope="col" class="border-0 bg-light">
-              <div class="py-2 text-uppercase">Quantity</div>
-            </th>
-          </tr>
-        </thead>
-        <tbody id="cartOutput">
-          <!-- <tr>
-            <th scope="row" class="border-0">
-              <div class="p-2">
-                <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-1_zrifhn.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
-                <div class="ml-3 d-inline-block align-middle">
-                  <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">Timex Unisex Originals</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: Watches</span>
-                </div>
-              </div>
-            </th>
-            <td class="border-0 align-middle"><strong>$79.00</strong></td>
-            <td class="border-0 align-middle"><strong>3</strong></td>
-          </tr> -->
-        </tbody>
-      </table>
-    </div>
-    
-    <!-- end -->
-    
+  <div id="doneOutput" class="align-items-left d-flex justify-content-left col-md-6">
+    <h4>Order Confirmed</h4>
   </div>
   
-  <div id="paypalOutput" class="align-items-right d-flex justify-content-right col-md-6">
-    <img width="80%" src="./images/paypal-logo.jpg" alt="">
-    <div class="row py-5 p-4 bg-white rounded shadow-sm">
-      <div class="col-lg-6">
-        <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
-        <div class="p-4">
-          <p id="address" class="font-italic mb-4"></p>
-          <ul class="list-unstyled mb-4">
-            <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
-              <h5 id="itemsTotal" class="font-weight-bold"></h5>
-            </li>
-          </ul><button id="confirm" class="btn btn-dark rounded-pill py-2 btn-block site-btn">Confirm</button>
-        </div>
-      </div>
-    </div>
+  <div id="homeOutput" class="align-items-right d-flex justify-content-right col-md-6">
+    <button id="returnHome" class="btn btn-dark rounded-pill py-2 btn-block site-btn">Return Home</button>
   </div>
 </div>
 

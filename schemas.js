@@ -29,3 +29,14 @@ var Session = mongoose.model("Session", {//sessions
 	userID: String
 });
 module.exports.Session = Session;
+
+var Order = mongoose.model("Order", {//orders
+	userID: String,
+	items: [String],
+	cost: String,
+	year: Number,
+	month: Number,
+	day: Number,
+	hour: Number
+});
+module.exports.Order = Order;

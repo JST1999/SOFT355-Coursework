@@ -190,6 +190,58 @@ app.post("/getuserdetails", function(req, res){
 	});
 });
 
+app.post("/order", function(req, res){
+	var sessionID = req.body.sessionID;
+	var items = req.body.items;
+
+	var total = 0.0;
+	for (var i = 0; i < items.length; i++){//
+		var itemID = items[i];
+		schemas.Item.findOne({"_id": itemID}, function(err, item) {//get cost myself or user can input their own with their own post req
+			if(item){//item found
+				total += item.price;
+			} else{
+				res.status("401");
+				res.json({
+					message: "Invalid Item ID"
+				});
+			}
+		});
+	}
+	
+	var d = new Date();
+	var year = d.getFullYear();
+	var month = d.getMonth();
+	var day = d.getDate();
+	var hour = d.getHours();
+
+	schemas.Session.findOne({"sessionID": sessionID}, function(err, sess) {
+		var userID = sess.userID;
+		if (sess){// session found
+			var Order = new schemas.Order({
+				"userID": userID,
+				"items": items,
+				"cost": total,
+				"year": year,
+				"month": month,
+				"day": day,
+				"hour": hour
+			});
+			Order.save().then((test) => {
+				res.status("200");
+				res.json({
+					message: "Added successfully"
+				});
+			});
+		} else{
+			res.status("401");
+			res.json({
+				message: "Invalid Session ID"
+			});
+		}
+	});
+});
+
 //sends index.html
 app.get("/", function(request, response) {
 	response.render("index");
