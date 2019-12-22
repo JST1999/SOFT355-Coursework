@@ -173,7 +173,7 @@ app.post("/logout", function(req, res){
 
 app.post("/getuserdetails", function(req, res){
 	schemas.Session.findOne({"sessionID": req.body.sessionID}, function(err, sess) {
-		if (sess){// session not found
+		if (sess){// session found
 			schemas.User.findOne({"_id": sess.userID}, function(err, user) {//get user
 				res.setHeader("Content-Type", "application/json");
 				user.password = "";//security flaw if I send passwords back

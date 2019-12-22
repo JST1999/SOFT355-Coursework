@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>SayWatt | Electronic Store</title>
+
+  <meta name="description" content="Store for electronic components">
+  <meta name="keywords" content="Microcontrollers, Semiconductors, Diode">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- change icon -->
+  <link rel="icon" type="image/png" href="./images/logo-small.png">
+
+  <link href="./jsandcss/css" rel="stylesheet">
+
+  <!-- Latest compiled and minified CSS bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!-- Latest compiled JavaScript bootstrap -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <!-- js cookies https://github.com/js-cookie/js-cookie -->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+
+  <link rel="stylesheet" href="./jsandcss/font-awesome.min.css">
+  <link rel="stylesheet" href="./jsandcss/flaticon.css">
+  <link rel="stylesheet" href="./jsandcss/slicknav.min.css">
+  <link rel="stylesheet" href="./jsandcss/owl.carousel.min.css">
+  <link rel="stylesheet" href="./jsandcss/animate.css">
+  <link rel="stylesheet" href="./jsandcss/style.css">
+
+  <script src="./jsandcss/checkout-jquery.js"></script>
+
+</head>
+<body>
+
+<div id="preloder" style="display: none;">
+<div class="loader" style="display: none;"></div>
+</div>
+
+<header class="header-section">
+<div class="header-top">
+<div class="container">
+<div class="row">
+
+<!-- logo -->
+<div class="col-lg-2 text-center text-lg-left">
+  <a href="./" class="site-logo">
+    <img src="./images/logo.png" alt="">
+  </a>
+</div>
+<!-- logo end -->
+
+<!-- search bar -->
+<!-- <div class="col-xl-6 col-lg-5">
+  <form method="GET" class="header-search-form" id="searchForm">
+    <input id="searchBar" name="querystr" type="text" placeholder="Search on this site...">
+    <button id="searchBTN"><img src="./images/search-icon.png" alt=""></button>
+  </form>
+</div> -->
+<!-- search bar end -->
+
+</div>
+</div>
+</div>
+
+<!-- nav bar -->
+<nav class="main-navbar">
+<div class="container">
+  
+  <div class="slicknav_menu">
+    <ul class="slicknav_nav slicknav_hidden" aria-hidden="true" role="menu" style="display: none;">
+      <li><a href="./" role="menuitem" tabindex="-1">Home</a></li>
+
+      <li class="slicknav_collapsed slicknav_parent">
+        <a href="./" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row" style="outline: none;">
+          <a href="./" tabindex="-1">Component Categories</a>
+        </a>
+        <ul class="sub-menu slicknav_hidden" role="menu" aria-hidden="true" style="display: none;">
+          
+        </ul>
+      </li>
+
+      <li class="slicknav_collapsed slicknav_parent">
+        <a href="./" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row" style="outline: none;">
+          <a href="./" tabindex="-1">PC Categories</a>
+        </a>
+        <ul class="sub-menu slicknav_hidden" role="menu" aria-hidden="true" style="display: none;">
+          
+        </ul>
+      </li>
+
+      <li class="slicknav_collapsed slicknav_parent">
+        <a href="./" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row" style="outline: none;">
+          <a href="./" tabindex="-1">Consoles</a>
+        </a>
+        <ul class="sub-menu slicknav_hidden" role="menu" aria-hidden="true" style="display: none;">
+          
+        </ul>
+      </li>
+
+      <li class="slicknav_collapsed slicknav_parent">
+        <a href="./" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row" style="outline: none;">
+          <a href="./" tabindex="-1">Games</a>
+        </a>
+        <ul class="sub-menu slicknav_hidden" role="menu" aria-hidden="true" style="display: none;">
+          
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <ul class="main-menu">
+  <li><a href="./">Home</a></li>
+
+  <li><a href="./">Component Categories
+    <span class="new">New</span></a>
+    <ul class="sub-menu">
+    <li><a href="./">Microcontrollers</a></li>
+    <li><a href="./">Semiconductors</a></li>
+    <li><a href="./">Diodes</a></li>
+    <li><a href="./">Integrated Circuits</a></li>
+    <li><a href="./">Motors</a></li>
+    <li><a href="./">Display boards</a></li>
+    <li><a href="./">Cables and boards</a></li>
+    </ul>
+  </li>
+
+  <li><a href="./">PC Categories</a>
+    <ul class="sub-menu">
+    <li><a href="./">CPU</a></li>
+    <li><a href="./">GPU</a></li>
+    <li><a href="./">RAM</a></li>
+    <li><a href="./">Motherboards</a></li>
+    <li><a href="./">HDD/SDD</a></li>
+    <li><a href="./">Cooling</a></li>
+    <li><a href="./">PSU</a></li>
+    <li><a href="./">MISC</a></li>
+    </ul>
+  </li>
+
+  <li><a href="./">Consoles</a>
+    <ul class="sub-menu">
+    <li><a href="./">Xbox</a></li>
+    <li><a href="./">PlayStation</a></li>
+    <li><a href="./">Nintendo</a></li>
+    </ul>
+  </li>
+
+  <li><a href="./">Games</a>
+    <ul class="sub-menu">
+    <li><a href="./">PC</a></li>
+    <li><a href="./">Xbox One</a></li>
+    <li><a href="./">PS4</a></li>
+    <li><a href="./">Nintendo Switch</a></li>
+    </ul>
+  </li>
+  </ul>
+
+</div>
+</nav>
+<!-- nav bar end -->
+</header>
+
+<div class="container">
+  <div id="itemsOutput" class="align-items-left d-flex justify-content-left col-md-6">
+
+    <!-- Shopping cart table -->
+    <div class="table-responsive">
+      <table id="cartTableOutput" class="table">
+        <thead>
+          <tr>
+            <th scope="col" class="border-0 bg-light">
+              <div class="p-2 px-3 text-uppercase">Product</div>
+            </th>
+            <th scope="col" class="border-0 bg-light">
+              <div class="py-2 text-uppercase">Price</div>
+            </th>
+            <th scope="col" class="border-0 bg-light">
+              <div class="py-2 text-uppercase">Quantity</div>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="cartOutput">
+          <!-- <tr>
+            <th scope="row" class="border-0">
+              <div class="p-2">
+                <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-1_zrifhn.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
+                <div class="ml-3 d-inline-block align-middle">
+                  <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">Timex Unisex Originals</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: Watches</span>
+                </div>
+              </div>
+            </th>
+            <td class="border-0 align-middle"><strong>$79.00</strong></td>
+            <td class="border-0 align-middle"><strong>3</strong></td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- end -->
+    
+  </div>
+  
+  <div id="itemsOutput" class="align-items-right d-flex justify-content-right col-md-6">
+    <img width="80%" src="./images/paypal-logo.jpg" alt="">
+    <div class="row py-5 p-4 bg-white rounded shadow-sm">
+      <div class="col-lg-6">
+        <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
+        <div class="p-4">
+          <p id="address" class="font-italic mb-4"></p>
+          <ul class="list-unstyled mb-4">
+            <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
+              <h5 id="itemsTotal" class="font-weight-bold"></h5>
+            </li>
+          </ul><button id="confirm" class="btn btn-dark rounded-pill py-2 btn-block site-btn">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- footer -->
+<section class="footer-section">
+<div class="container">
+
+<div class="footer-logo text-center">
+<a href="./"><img src="./images/logo.png" alt=""></a>
+</div>
+
+<div class="row">
+<div class="col-lg-3 col-sm-6">
+<div class="footer-widget about-widget">
+<h2>About</h2>
+<p>Independently run company ran by a broke uni student</p>
+<img src="./images/cards.png" alt="">
+</div>
+</div>
+
+<div class="col-lg-3 col-sm-6">
+<div class="footer-widget about-widget">
+<h2>Questions</h2>
+<ul>
+<li><a href="./">About Us</a></li>
+<li><a href="./">Track Orders</a></li>
+<li><a href="./">Returns</a></li>
+<li><a href="./">Jobs</a></li>
+<li><a href="./">Shipping</a></li>
+</ul>
+<ul>
+<li><a href="./">Partners</a></li>
+<li><a href="./">Support</a></li>
+<li><a href="./">Terms of Use</a></li>
+</ul>
+</div>
+</div>
+
+<div class="col-lg-3 col-sm-6">
+<div class="footer-widget about-widget">
+<h2>Questions</h2>
+<div class="fw-latest-post-widget">
+
+<div class="lp-item">
+<div class="lp-thumb set-bg" data-setbg="img/blog-thumbs/1.jpg" style="background-image: url(&quot;img/blog-thumbs/1.jpg&quot;);"></div>
+<div class="lp-content">
+<h6>what to get</h6>
+<a href="./" class="readmore">Read More</a>
+</div>
+</div>
+
+<div class="lp-item">
+<div class="lp-thumb set-bg" data-setbg="img/blog-thumbs/2.jpg" style="background-image: url(&quot;img/blog-thumbs/2.jpg&quot;);"></div>
+<div class="lp-content">
+<h6>trends this year</h6>
+<a href="./" class="readmore">Read More</a>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="col-lg-3 col-sm-6">
+<div class="footer-widget contact-widget">
+<h2>Questions</h2>
+<div class="con-info">
+<span>C.</span>
+<p>SayWatt</p>
+</div>
+<div class="con-info">
+<span>B.</span>
+<p>8 Castle St, Plymouth, PL1 2NH</p>
+</div>
+<div class="con-info">
+<span>T.</span>
+<p>+44 01460 00000</p>
+</div>
+<div class="con-info">
+<span>E.</span>
+ <p>jtungay@gmail.com</p>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="social-links-warp">
+  <div class="container">
+    <p class="text-white text-center mt-5">Copyright ©<script type="text/javascript">document.write(new Date().getFullYear());</script> All rights reserved</p>
+  </div>
+</div>
+
+</section>
+<!-- footer end -->
+
+
+<script src="./jsandcss/jquery-3.2.1.min.js.download" type="text/javascript"></script>
+<script src="./jsandcss/jquery.slicknav.min.js.download" type="text/javascript"></script>
+<script src="./jsandcss/owl.carousel.min.js.download" type="text/javascript"></script>
+<script src="./jsandcss/jquery.nicescroll.min.js.download" type="text/javascript"></script>
+<script src="./jsandcss/jquery.zoom.min.js.download" type="text/javascript"></script>
+<script src="./jsandcss/jquery-ui.min.js.download" type="text/javascript"></script>
+<script src="./jsandcss/main.js.download" type="text/javascript"></script>
+
+<script async="" src="./jsandcss/js" type="text/javascript"></script>
+<script type="text/javascript">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+</script>
+
+
+</body></html>

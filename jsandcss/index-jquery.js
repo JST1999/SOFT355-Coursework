@@ -2,7 +2,7 @@ var hashes = window.location.href;
 var num = hashes.indexOf('?');
 var url = hashes.substring(0, num);//these 3 are so that the website can be on any host i.e. localhost, soft355.herokuapp.com
 var userDetails;
-var sessionID;
+var sessionID = null;
 var cartItems = [];
 
 $(document).ready(function() {
@@ -220,10 +220,8 @@ $(document).ready(function() {
                     password: password
                 }, function(data, status) { 
                     $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>Logged In</p>");
-                    console.log(data);
                     Cookies.set('sessionID', data.message);
                     sessionID = Cookies.get("sessionID");
-                    console.log(sessionID);
                     getUserDetails();
                     outputLogoutDiv();
                 }).fail(function(xhr, status, error) {
@@ -246,6 +244,20 @@ $(document).ready(function() {
     });
     
     
+    $("#goToCheckoutBTN").click(function(){
+        if(sessionID != null){
+            if(cartItems.length != 0){
+                var uri = url+"checkout.html";
+                window.location.href = uri;//user can get back to home by hitting back in their browser
+            } else{
+                $("#cartErrorOutput").text("Cart Empty");
+            }
+        } else{
+            $("#cartErrorOutput").text("Sign In");
+        }
+    });
+
+
     function search(){  //gets the url and does a get request
         var vars = [], hash;
         var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
