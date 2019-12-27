@@ -23,12 +23,21 @@ var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
 var sha256 = require('sha256');
 
+//one of my fav parts, this is a part for sending emails
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'saywatt0@gmail.com',
+    pass: 'What are you looking at1'
+  }
+});
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.array());
 app.use(cookieParser());
 //app.use(session({secret: "Your secret key", saveUninitialized: false, resave: false}));
-
 
 app.use(express.static(__dirname));
 
@@ -109,6 +118,22 @@ app.post('/signup', function(req, res){
 					"postcode": postcode
 				});
 				User.save().then((test) => {
+					//setup email
+					var mailOptions = {
+						from: 'saywatt0@gmail.com',
+						to: email,
+						subject: 'Welcome!',
+						text: 'Welcome '+firstname+'. This is a confirmation that you have created an account with SayWatt.'
+					};
+					//send email
+					transporter.sendMail(mailOptions, function(error, info){
+						if (error) {
+						  console.log(error);
+						} else {
+						  console.log('Email sent: ' + info.response);
+						}
+					});
+
 					res.status("200");
 					res.json({
 						message: "Added successfully"
@@ -227,12 +252,56 @@ app.post("/order", function(req, res){
 				"day": day,
 				"hour": hour
 			});
-			Order.save().then((test) => {
+			schemas.Order.insertMany(Order, function(err){
+				if (err) throw err;
+				
+				schemas.User.findOne({"_id": sess.userID}, function(err, user) {//get user
+					//setup email
+					var mailOptions = {
+						from: 'saywatt0@gmail.com',
+						to: user.email,
+						subject: 'Order Confirmation!',
+						text: 'User-id '+user._id+' . order-id '+Order._id
+					};
+					//send email
+					transporter.sendMail(mailOptions, function(error, info){
+						if (error) {
+							console.log(error);
+						} else {
+							console.log('Email sent: ' + info.response);
+						}
+					});
+				});
+
 				res.status("200");
 				res.json({
 					message: "Added successfully"
 				});
 			});
+			// Order.save().then((test) => {
+			// 	schemas.User.findOne({"_id": sess.userID}, function(err, user) {//get user
+			// 		//setup email
+			// 		var mailOptions = {
+			// 			from: 'saywatt0@gmail.com',
+			// 			to: user.email,
+			// 			subject: 'Welcome!',
+			// 			text: 'Welcome '+user.firstname+'. This is a confirmation that you have created an account with SayWatt.'
+			// 		};
+			// 		//send email
+			// 		transporter.sendMail(mailOptions, function(error, info){
+			// 			if (error) {
+			// 			  console.log(error);
+			// 			} else {
+			// 			  console.log('Email sent: ' + info.response);
+			// 			}
+			// 		});
+			// 	});
+
+			// 	res.status("200");
+			// 	res.json({
+			// 		message: "Added successfully"
+			// 	});
+			// });
 		} else{
 			res.status("401");
 			res.json({
