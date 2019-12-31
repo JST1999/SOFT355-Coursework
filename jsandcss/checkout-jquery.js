@@ -60,6 +60,7 @@ $(document).ready(function() {
             $("#address").text(userDetails.streetName+",\n"+userDetails.city+",\n"+userDetails.county+",\n"+userDetails.postcode);
         }).fail(function(xhr, status, error) {
             Cookies.remove('sessionID');
+            window.location.replace("./");
         });
     }
     sessionID = Cookies.get('sessionID');

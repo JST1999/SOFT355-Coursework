@@ -40,3 +40,12 @@ var Order = mongoose.model("Order", {//orders
 	hour: Number
 });
 module.exports.Order = Order;
+
+var Admin = mongoose.model("Admin", {//admins in database
+	firstname: String,
+	lastname: String,
+	username: String,
+	password: String,
+	salt: String
+});
+module.exports.Admin = Admin;

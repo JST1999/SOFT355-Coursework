@@ -278,30 +278,6 @@ app.post("/order", function(req, res){
 					message: "Added successfully"
 				});
 			});
-			// Order.save().then((test) => {
-			// 	schemas.User.findOne({"_id": sess.userID}, function(err, user) {//get user
-			// 		//setup email
-			// 		var mailOptions = {
-			// 			from: 'saywatt0@gmail.com',
-			// 			to: user.email,
-			// 			subject: 'Welcome!',
-			// 			text: 'Welcome '+user.firstname+'. This is a confirmation that you have created an account with SayWatt.'
-			// 		};
-			// 		//send email
-			// 		transporter.sendMail(mailOptions, function(error, info){
-			// 			if (error) {
-			// 			  console.log(error);
-			// 			} else {
-			// 			  console.log('Email sent: ' + info.response);
-			// 			}
-			// 		});
-			// 	});
-
-			// 	res.status("200");
-			// 	res.json({
-			// 		message: "Added successfully"
-			// 	});
-			// });
 		} else{
 			res.status("401");
 			res.json({
