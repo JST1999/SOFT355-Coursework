@@ -33,6 +33,8 @@ var transporter = nodemailer.createTransport({
   }
 });
 
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.array());
@@ -183,6 +185,41 @@ app.post('/login', function(req, res){
 	}
 });
 
+app.post('/adminlogin', function(req, res){
+	var username = req.body.username;
+	var password = req.body.password;
+
+	schemas.Admin.find({"username": username}, function(err, user) {//search for admin
+		if (user.length === 0){// admin not found
+			res.status("401");
+			res.json({
+				message: "Invalid Email or Password"
+			});
+		} else{//admin is found
+			var salt = user[0].salt;
+			var hash = createHash(password, salt);
+			if(hash != user[0].password){//password not correct
+				res.status("401");
+				res.json({
+					message: "Invalid Email or Password"
+				});
+			} else{//password is correct
+				var Session = new schemas.Session({//create new session
+					sessionID: createHash(user[0]._id, ''),
+					userID: user[0]._id
+				});
+				schemas.Session.insertMany(Session, function(err){
+					if (err) throw err;
+					res.status("200");
+					res.json({
+						message: Session.sessionID
+					});
+				});
+			}
+		}
+	});
+});
+
 app.post("/logout", function(req, res){
 	schemas.Session.deleteOne({"sessionID": req.body.sessionID}, function(err, sess) {
 		if (err){
@@ -200,6 +237,25 @@ app.post("/getuserdetails", function(req, res){
 	schemas.Session.findOne({"sessionID": req.body.sessionID}, function(err, sess) {
 		if (sess){// session found
 			schemas.User.findOne({"_id": sess.userID}, function(err, user) {//get user
+				res.setHeader("Content-Type", "application/json");
+				user.password = "";//security flaw if I send passwords back
+				user.salt = "";
+				res.status("200");
+				res.send(user);
+			});
+		} else{
+			res.status("401");
+			res.json({
+				message: "Invalid Session ID"
+			});
+		}
+	});
+});
+
+app.post("/getadmindetails", function(req, res){
+	schemas.Session.findOne({"sessionID": req.body.sessionID}, function(err, sess) {
+		if (sess){// session found
+			schemas.Admin.findOne({"_id": sess.userID}, function(err, user) {//get user
 				res.setHeader("Content-Type", "application/json");
 				user.password = "";//security flaw if I send passwords back
 				user.salt = "";
