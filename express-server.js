@@ -369,41 +369,21 @@ app.post("/additem", function(req, res){
 	var filename = req.body.filename;
 	var price = req.body.price;
 	var quantity = req.body.quantity;
-	var category = req.body.category;
+	var category = req.body.category + '';//this concatination makes category a string so that .split() works
+	category = category.split(',')
 
 	schemas.Session.findOne({"sessionID": sessionID}, function(err, sess) {
-		var userID = sess.userID;
 		if (sess){// session found
-			var Order = new schemas.Order({
-				"userID": userID,
-				"items": items,
-				"cost": total,
-				"year": year,
-				"month": month,
-				"day": day,
-				"hour": hour
+			var Item = new schemas.Item({
+				"name": name,
+				"filename": filename,
+				"description": description,
+				"category": category,
+				"price": price,
+				"quantity": quantity,
+				"reviews": []
 			});
-			schemas.Order.insertMany(Order, function(err){
-				if (err) throw err;
-				
-				schemas.Admin.findOne({"_id": sess.userID}, function(err, user) {//get user
-					//setup email
-					var mailOptions = {
-						from: 'saywatt0@gmail.com',
-						to: user.email,
-						subject: 'Order Confirmation!',
-						text: 'User-id '+user._id+' . order-id '+Order._id
-					};
-					//send email
-					transporter.sendMail(mailOptions, function(error, info){
-						if (error) {
-							console.log(error);
-						} else {
-							console.log('Email sent: ' + info.response);
-						}
-					});
-				});
-
+			Item.save().then((test) => {
 				res.status("200");
 				res.json({
 					message: "Added successfully"
@@ -416,6 +396,32 @@ app.post("/additem", function(req, res){
 			});
 		}
 	});
+});
+
+app.post("/removeitem", function(req, res){
+	var sessionID = req.body.sessionID;
+	var itemID = req.body.id;
+
+	schemas.Session.findOne({"sessionID": sessionID}, function(err, sess) {
+		if (sess){// session found
+			schemas.Item.deleteOne({"_id": itemID}, function(err, sess) {
+				if (err){
+					res.status("500");
+					throw err;
+				}
+				res.status("200");
+				res.json({
+					message: "Removed Successfully"
+				});
+			});
+		} else{
+			res.status("401");
+			res.json({
+				message: "Invalid Session ID"
+			});
+		}
+	});
+
 });
 
 //sends index.html
