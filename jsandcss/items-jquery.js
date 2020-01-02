@@ -16,7 +16,20 @@ $(document).ready(function() {
         if(name.length === 0 || description.length === 0 || filename.length === 0 || price.length === 0 || quantity.length === 0 || category.length === 0){
             $("#addOutput").html("<p id='outputText' style='color: #ffa500;'>All inputs need to be filled in</p>");
         } else{
-            console.log(name+"\n"+description+"\n"+price+"\n"+quantity+"\n"+category+"\n");
+            var uri = url+"additem";
+            $.post(uri, {
+                sessionID: sessionID,
+                name: name,
+                description: description,
+                filename: filename,
+                price: price,
+                quantity: quantity,
+                category: category
+            }, function(data, status) { 
+                $("#addOutput").html("<p id='outputText' style='color: #ffa500;'>Added Successfully</p>");
+            }).fail(function(xhr, status, error) {
+                $("#addOutput").html("<p id='outputText' style='color: #ffa500;'>Try again</p>");
+            });
         }
     });
 
@@ -92,17 +105,24 @@ $(document).ready(function() {
             '</li>';
             
             $("#searchResultsOutput").on("click", "#"+id, function(){
-                console.log(event.target.id);
+                var itemID = event.target.id;
+                var uri = url+"removeitem";
+                $.post(uri, {
+                    sessionID: sessionID,
+                    id: itemID
+                }, function(data, status) { 
+                    window.location.replace("./items.html");
+                }).fail(function(xhr, status, error) {
+                    $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>Try again</p>");
+                });
             });
         }
         
-        //</li>var text = "<li class='list-group-item'>"+res+"</li>"
         $("#searchResultsOutput").html(text);
     }
 
     $("#searchBTN").click(function(e) {
         e.preventDefault();
-        console.log("search button clicked");
         search();
     });
 });
