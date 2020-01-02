@@ -4,6 +4,22 @@ var userDetails;
 var sessionID = null;
 
 $(document).ready(function() {
+    $("#addBTN").click( function(e){
+        e.preventDefault();
+        var name = $("#name").val();
+        var description = $("#description").val();
+        var filename = $("#filename").val();
+        var price = $("#price").val();
+        var quantity = $("#quantity").val();
+        var category = $("#category").val();
+
+        if(name.length === 0 || description.length === 0 || filename.length === 0 || price.length === 0 || quantity.length === 0 || category.length === 0){
+            $("#addOutput").html("<p id='outputText' style='color: #ffa500;'>All inputs need to be filled in</p>");
+        } else{
+            console.log(name+"\n"+description+"\n"+price+"\n"+quantity+"\n"+category+"\n");
+        }
+    });
+
     function getAdminDetails(){
         var uri = url+"getadmindetails";
         $.post(uri, {
@@ -23,7 +39,8 @@ $(document).ready(function() {
     }
 
 
-    $("#logoutBTN").click( function(){
+    $("#logoutBTN").click( function(e){
+        e.preventDefault();
         var uri = url+"logout";
         $.post(uri, {
             sessionID: sessionID
@@ -34,7 +51,8 @@ $(document).ready(function() {
             $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>Try again</p>");
         });
     });
-    $("#logoutBTNslicknav").click( function(){
+    $("#logoutBTNslicknav").click( function(e){
+        e.preventDefault();
         var uri = url+"logout";
         $.post(uri, {
             sessionID: sessionID
@@ -74,7 +92,7 @@ $(document).ready(function() {
             '</li>';
             
             $("#searchResultsOutput").on("click", "#"+id, function(){
-                addToCart(event.target.id);
+                console.log(event.target.id);
             });
         }
         

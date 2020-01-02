@@ -33,11 +33,21 @@ var transporter = nodemailer.createTransport({
   }
 });
 
-
+var Storage = multer.diskStorage({//used to help add images https://dzone.com/articles/upload-files-or-images-to-server-using-nodejs
+	destination: function(req, file, callback) {
+		callback(null, "./product-images");
+	},
+	filename: function(req, file, callback) {
+		callback(null, file.originalname);
+	}
+});//also, another one of my fav features
+var upload = multer({
+	storage: Storage
+}).array("imgUploader", 3); //Field name and max count
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(upload.array());
+//app.use(upload.array());
 app.use(cookieParser());
 //app.use(session({secret: "Your secret key", saveUninitialized: false, resave: false}));
 
@@ -312,6 +322,71 @@ app.post("/order", function(req, res){
 				if (err) throw err;
 				
 				schemas.User.findOne({"_id": sess.userID}, function(err, user) {//get user
+					//setup email
+					var mailOptions = {
+						from: 'saywatt0@gmail.com',
+						to: user.email,
+						subject: 'Order Confirmation!',
+						text: 'User-id '+user._id+' . order-id '+Order._id
+					};
+					//send email
+					transporter.sendMail(mailOptions, function(error, info){
+						if (error) {
+							console.log(error);
+						} else {
+							console.log('Email sent: ' + info.response);
+						}
+					});
+				});
+
+				res.status("200");
+				res.json({
+					message: "Added successfully"
+				});
+			});
+		} else{
+			res.status("401");
+			res.json({
+				message: "Invalid Session ID"
+			});
+		}
+	});
+});
+
+app.post("/addimage", function(req, res) {
+	upload(req, res, function(err) {
+		if (err) {
+			return res.end("Something went wrong!");
+		}
+		return res.end("File uploaded sucessfully!.");
+	});
+});
+
+app.post("/additem", function(req, res){
+	var sessionID = req.body.sessionID;
+	var name = req.body.name;
+	var description = req.body.description;
+	var filename = req.body.filename;
+	var price = req.body.price;
+	var quantity = req.body.quantity;
+	var category = req.body.category;
+
+	schemas.Session.findOne({"sessionID": sessionID}, function(err, sess) {
+		var userID = sess.userID;
+		if (sess){// session found
+			var Order = new schemas.Order({
+				"userID": userID,
+				"items": items,
+				"cost": total,
+				"year": year,
+				"month": month,
+				"day": day,
+				"hour": hour
+			});
+			schemas.Order.insertMany(Order, function(err){
+				if (err) throw err;
+				
+				schemas.Admin.findOne({"_id": sess.userID}, function(err, user) {//get user
 					//setup email
 					var mailOptions = {
 						from: 'saywatt0@gmail.com',
