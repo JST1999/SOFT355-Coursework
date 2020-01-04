@@ -422,8 +422,37 @@ app.post("/removeitem", function(req, res){
 			});
 		}
 	});
-
 });
+
+app.post("/getorders", function(req, res){
+	var sessionID = req.body.sessionID;
+
+	schemas.Session.findOne({"sessionID": sessionID}, function(err, sess) {
+		if (sess){// session found
+			schemas.Admin.findOne({"_id": sess.userID}, function(err, user) {//get user
+				if(user){
+					schemas.Order.find({"dispatched": false}, function(err, orders) {
+						res.setHeader("Content-Type", "application/json");
+						res.status("200");
+						res.send(orders);
+					});
+				} else{
+					res.status("401");
+					res.json({
+						message: "Invalid Session ID"
+					});
+				}
+			});
+		} else{
+			res.status("401");
+			res.json({
+				message: "Invalid Session ID"
+			});
+		}
+	});
+});
+
+
 
 var WebSocketServer = require('websocket').server;
 var http = require('http');
@@ -459,11 +488,10 @@ wsServer.on('request', function(request) {
     var connection = request.accept(null, request.origin);
     console.log((new Date()) + ' Connection accepted.');
 	const changeStream = schemas.Order.watch();
-	// changeStream.on('change', next => {
-	// 	console.log("New Order")
-	// 	connection.sendUTF("new");
-	// });
-	connection.sendUTF("new");
+	changeStream.on('change', next => {
+		console.log("New order sent to admin")
+		connection.sendUTF("new");
+	});
     connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });

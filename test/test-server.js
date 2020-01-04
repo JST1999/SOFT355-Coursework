@@ -279,6 +279,18 @@ describe("Admin", function() {
         done();
       });
   });
+  it('should get orders on /getorders POST', function(done) {
+    this.timeout(20000);
+    setTimeout(done, 20000);
+    chai.request(server)
+      .post('/getorders')
+      .send({sessionID: adminSessID})
+      .end(function(err, res){
+        res.should.have.status(200);
+        res.should.be.json;
+        done();
+      });
+  });
   it('should confirm a logout of SINGLE admin on /logout POST', function(done) {
     this.timeout(20000);
     setTimeout(done, 20000);
