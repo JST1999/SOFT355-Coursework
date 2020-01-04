@@ -359,7 +359,7 @@ app.post("/addimage", function(req, res) {
 		if (err) {
 			return res.end("Something went wrong!");
 		}
-		return res.end("File uploaded sucessfully!.");
+		return res.end("File uploaded sucessfully!");
 	});
 });
 
@@ -375,20 +375,29 @@ app.post("/additem", function(req, res){
 
 	schemas.Session.findOne({"sessionID": sessionID}, function(err, sess) {
 		if (sess){// session found
-			var Item = new schemas.Item({
-				"name": name,
-				"filename": filename,
-				"description": description,
-				"category": category,
-				"price": price,
-				"quantity": quantity,
-				"reviews": []
-			});
-			Item.save().then((test) => {
-				res.status("200");
-				res.json({
-					message: "Added successfully"
-				});
+			schemas.Admin.findOne({"_id": sess.userID}, function(err, user) {//get user
+				if(user){
+					var Item = new schemas.Item({
+						"name": name,
+						"filename": filename,
+						"description": description,
+						"category": category,
+						"price": price,
+						"quantity": quantity,
+						"reviews": []
+					});
+					Item.save().then((test) => {
+						res.status("200");
+						res.json({
+							message: "Added successfully"
+						});
+					});
+				} else{
+					res.status("401");
+					res.json({
+						message: "Invalid Session ID"
+					});
+				}
 			});
 		} else{
 			res.status("401");
@@ -405,15 +414,24 @@ app.post("/removeitem", function(req, res){
 
 	schemas.Session.findOne({"sessionID": sessionID}, function(err, sess) {
 		if (sess){// session found
-			schemas.Item.deleteOne({"_id": itemID}, function(err, sess) {
-				if (err){
-					res.status("500");
-					throw err;
+			schemas.Admin.findOne({"_id": sess.userID}, function(err, user) {//get user
+				if(user){
+					schemas.Item.deleteOne({"_id": itemID}, function(err, sess) {
+						if (err){
+							res.status("500");
+							throw err;
+						}
+						res.status("200");
+						res.json({
+							message: "Removed Successfully"
+						});
+					});
+				} else{
+					res.status("401");
+					res.json({
+						message: "Invalid Session ID"
+					});
 				}
-				res.status("200");
-				res.json({
-					message: "Removed Successfully"
-				});
 			});
 		} else{
 			res.status("401");
@@ -435,6 +453,62 @@ app.post("/getorders", function(req, res){
 						res.setHeader("Content-Type", "application/json");
 						res.status("200");
 						res.send(orders);
+					});
+				} else{
+					res.status("401");
+					res.json({
+						message: "Invalid Session ID"
+					});
+				}
+			});
+		} else{
+			res.status("401");
+			res.json({
+				message: "Invalid Session ID"
+			});
+		}
+	});
+});
+
+app.post("/updatedispatchment", function(req, res){
+	var sessionID = req.body.sessionID;
+	var orderID = req.body.orderID;
+	var custID;
+	var newOrder;
+
+	schemas.Order.findOne({"_id": orderID}, function(err, order) {
+		custID = order.userID;
+		newOrder = order;
+	});
+
+	schemas.Session.findOne({"sessionID": sessionID}, function(err, sess) {
+		if (sess){// session found
+			schemas.Admin.findOne({"_id": sess.userID}, function(err, user) {//get user
+				if(user){
+					newOrder.dispatched = true;
+					newOrder.save().then((test) => {
+						schemas.User.findOne({"_id": custID}, function(err, cust) {//get user
+							//setup email
+							var mailOptions = {
+								from: 'saywatt0@gmail.com',
+								to: cust.email,
+								subject: 'Order Dispatched!',
+								text: 'User-id '+cust._id+' . order-id '+orderID
+							};
+							//send email
+							transporter.sendMail(mailOptions, function(error, info){
+								if (error) {
+									console.log(error);
+								} else {
+									console.log('Email sent: ' + info.response);
+								}
+							});
+						});
+	
+						res.status("200");
+						res.json({
+							message: "Changed Successfully"
+						});
 					});
 				} else{
 					res.status("401");
@@ -489,8 +563,8 @@ wsServer.on('request', function(request) {
     console.log((new Date()) + ' Connection accepted.');
 	const changeStream = schemas.Order.watch();
 	changeStream.on('change', next => {
-		console.log("New order sent to admin")
-		connection.sendUTF("new");
+		console.log("New change in order collection")
+		connection.sendUTF("change");
 	});
     connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');

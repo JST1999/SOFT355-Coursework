@@ -72,23 +72,22 @@ $(document).ready(function() {
             '<p class="font-italic text-muted mb-0 small">£: '+res[i].cost+'</p>' +
             '<p class="font-italic text-muted mb-0 small">Time - h:'+res[i].hour+' d:'+res[i].day+'/'+(res[i].month+1)+'/'+res[i].year+'</p>' +
             '<div class="d-flex align-items-center justify-content-between mt-1">' +
-            '<h6 class="font-weight-bold my-2">'+res[i].dispatched+'</h6>' +
+            '<h6 class="font-weight-bold my-2">Dispatched: '+res[i].dispatched+'</h6>' +
             '</div>' +
             '<button id="'+id+'" class="btn btn-dark rounded-pill py-2 btn-block site-btn sb-white">Mark As Dispatched</button>' +
             '</li>';
             
             $("#searchResultsOutput").on("click", "#"+id, function(){
-                // var itemID = event.target.id;
-                // var uri = url+"removeitem";
-                // $.post(uri, {
-                //     sessionID: sessionID,
-                //     id: itemID
-                // }, function(data, status) { 
-                //     window.location.replace("./items.html");
-                // }).fail(function(xhr, status, error) {
+                var orderID = event.target.id;
+                var uri = url+"updatedispatchment";
+                $.post(uri, {
+                    sessionID: sessionID,
+                    orderID: orderID
+                }, function(data, status) { 
                     
-                // });
-                console.log(event.target.id+" clicked");
+                }).fail(function(xhr, status, error) {
+                    
+                });
             });
         }
         
@@ -117,7 +116,7 @@ $(document).ready(function() {
     // most important part - incoming messages
     connection.onmessage = function (message) {
         console.log("Received: '" + message.data + "'");
-        if(message.data === "new"){
+        if(message.data === "change"){
             search();
         }
     };
