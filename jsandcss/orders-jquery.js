@@ -80,7 +80,7 @@ $(document).ready(function() {
                 }, function(data, status) { 
                     window.location.replace("./items.html");
                 }).fail(function(xhr, status, error) {
-                    $("#loginFormOutput").html("<p id='outputText' style='color: #ffa500;'>Try again</p>");
+                    
                 });
             });
         }
@@ -93,4 +93,52 @@ $(document).ready(function() {
         //search();
         console.log("searchbtn clicked");
     });
+
+
+
+    // var WebSocketClient = require('websocket').client;
+    // var client = new WebSocketClient();
+    
+    // client.on('connectFailed', function(error) {
+    //     console.log('Connect Error: ' + error.toString());
+    // });
+    
+    // client.on('connect', function(connection) {
+    //     console.log('WebSocket Client Connected');
+    //     connection.on('error', function(error) {
+    //         console.log("Connection Error: " + error.toString());
+    //     });
+    //     connection.on('close', function() {
+    //         console.log('echo-protocol Connection Closed');
+    //     });
+    //     connection.on('message', function(message) {
+    //         if (message.type === 'utf8') {
+    //             console.log("Received: '" + message.utf8Data + "'");
+    //             $("#searchResultsOutput").html('<h5 class="mt-0 font-weight-bold mb-2">'+message.utf8Data+'</h5>');
+    //         }
+    //     });
+    // });
+    
+    // client.connect('ws://localhost:9000/', 'echo-protocol');
+
+    
+    // if user is running mozilla then use it's built-in WebSocket
+    window.WebSocket = window.WebSocket || window.MozWebSocket;
+    // if browser doesn't support WebSocket, just show some notification and exit
+    if (!window.WebSocket) {
+        console.log('Sorry, but your browser doesn\'t support WebSocket.');
+    }
+    // open connection
+    var connection = new WebSocket('ws://localhost:9000/');
+    connection.onopen = function () {
+        console.log('WebSocket Client Connected');
+    };
+    connection.onerror = function (error) {
+        console.log("Connection Error: " + error.toString());
+    };
+    // most important part - incoming messages
+    connection.onmessage = function (message) {
+        console.log("Received: '" + message.data + "'");
+        $("#searchResultsOutput").html('<h5 class="mt-0 font-weight-bold mb-2">'+message.data+'</h5>');
+    };
 });

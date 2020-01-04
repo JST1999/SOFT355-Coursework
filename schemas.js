@@ -37,7 +37,8 @@ var Order = mongoose.model("Order", {//orders
 	year: Number,
 	month: Number,
 	day: Number,
-	hour: Number
+	hour: Number,
+	dispatched: Boolean
 });
 module.exports.Order = Order;
 
