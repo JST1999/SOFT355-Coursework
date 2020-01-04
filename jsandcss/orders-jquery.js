@@ -1,38 +1,9 @@
 var hashes = window.location.href;
-var url = hashes.substring(0, hashes.length - 10);//these 2 are so that the website can be on any host i.e. localhost, soft355.herokuapp.com
+var url = hashes.substring(0, hashes.length - 11);//these 2 are so that the website can be on any host i.e. localhost, soft355.herokuapp.com
 var userDetails;
 var sessionID = null;
 
 $(document).ready(function() {
-    $("#addBTN").click( function(e){
-        e.preventDefault();
-        var name = $("#name").val();
-        var description = $("#description").val();
-        var filename = $("#filename").val();
-        var price = $("#price").val();
-        var quantity = $("#quantity").val();
-        var category = $("#category").val();
-
-        if(name.length === 0 || description.length === 0 || filename.length === 0 || price.length === 0 || quantity.length === 0 || category.length === 0){
-            $("#addOutput").html("<p id='outputText' style='color: #ffa500;'>All inputs need to be filled in</p>");
-        } else{
-            var uri = url+"additem";
-            $.post(uri, {
-                sessionID: sessionID,
-                name: name,
-                description: description,
-                filename: filename,
-                price: price,
-                quantity: quantity,
-                category: category
-            }, function(data, status) { 
-                $("#addOutput").html("<p id='outputText' style='color: #ffa500;'>Added Successfully</p>");
-            }).fail(function(xhr, status, error) {
-                $("#addOutput").html("<p id='outputText' style='color: #ffa500;'>Try again</p>");
-            });
-        }
-    });
-
     function getAdminDetails(){
         var uri = url+"getadmindetails";
         $.post(uri, {
@@ -73,17 +44,13 @@ $(document).ready(function() {
             Cookies.remove('adminSessionID');
             window.location.replace("./admin.html");
         }).fail(function(xhr, status, error) {
-           
+            
         });
     });
     
 
-    function search(){  //gets the url and does a get request
-        var query = $("#querystr").val();
-        var uri = url + "searchitems/" + query;
-        $.get(uri, {}, function(res) {
-            appendText(res);
-        });
+    function search(){
+            //appendText(res);
     }
     function appendText(res){   //turns the get requests response into html
         var text = "";
@@ -123,6 +90,7 @@ $(document).ready(function() {
 
     $("#searchBTN").click(function(e) {
         e.preventDefault();
-        search();
+        //search();
+        console.log("searchbtn clicked");
     });
 });
