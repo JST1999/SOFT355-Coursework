@@ -4,6 +4,7 @@ var url = hashes.substring(0, num);//these 3 are so that the website can be on a
 var userDetails;
 var sessionID = null;
 var cartItems = [];
+var paper;
 
 $(document).ready(function() {
     function getRequest(uri, i){
@@ -96,6 +97,7 @@ $(document).ready(function() {
 '      <p>Sign Up</p>'+
 '      <input type="text" class="inputBox" id="emailSU" name="email" placeholder="Email">'+
 '      <input type="password" class="inputBox" id="passwordSU" name="password" placeholder="********">'+
+'  <div id="canvasdiv"><div id="id1" width="50px" height="50px"></div></div>'+
 '      <input type="password" class="inputBox" id="confirmPasswordSU" name="confirmPassword" placeholder="Confirm ********">'+
 '      <input type="text" class="inputBox" id="streetNameSU" name="streetName" placeholder="Street Name">'+
 '      <input type="text" class="inputBox" id="citySU" name="city" placeholder="City">'+
@@ -109,6 +111,8 @@ $(document).ready(function() {
 '  <div id="loginFormOutput"></div>';
         $("#loginForm").empty();
         $("#loginForm").append(text2);
+        
+        paper = new Raphael($('#canvasdiv').get(0), 50, 50);
     }
     function outputLogoutDiv(){
         var text = '<img src="./images/person-icon.png" alt="">'+userDetails.firstname+' | Logout';
@@ -258,7 +262,44 @@ $(document).ready(function() {
     });
 
 
+    $("#passwordSU").keyup(function(){
+        var password = $("#passwordSU").val();
+        
+        emojiEmotion = {
+            'cx':25,
+            'cy':25,
+        };
+        emojiEye = {
+            'cx':25,
+            'cy':25,
+            'eyeColour':'#00ffff'
+        };
+        var faceShape = paper.circle(emojiEmotion.cx, emojiEmotion.cy, 21);
     
+        var eyeLeft = paper.circle(emojiEye.cx - 7.5, emojiEye.cy - 4.5, 3);
+        eyeLeft.attr("fill", emojiEye.eyeColour);
+    
+        var eyeRight = paper.circle(emojiEye.cx + 7.5, emojiEye.cy - 4.5, 3);
+        eyeRight.attr("fill", emojiEye.eyeColour);
+    
+        var hasNoNumbers = /^([^0-9]*)$/.test(password);//if there is a number then it returns false
+        var hasUpperLowerMix = /[a-z].*[A-Z]|[A-Z].*[a-z]/.test(password);//if there are upper and lower case letters then it returns true
+        var mouthX = emojiEmotion.cx - 8;
+        var mouthY = emojiEmotion.cy + 8;
+        if (password.includes("password")){//unhappy
+            faceShape.attr("fill", "#ff0000");
+            var mouth = paper.path("M " + mouthX + "," + mouthY + "q 9,-6 17,0");
+        } else if (password.length >= 15 && !hasNoNumbers && hasUpperLowerMix){//happy
+            faceShape.attr("fill", "#00ff00");
+            var mouth = paper.path("M " + mouthX + "," + mouthY + "q 9,6 17,0");
+        } else if (password.length > 8 && (!hasNoNumbers || hasUpperLowerMix)){//neutral
+            faceShape.attr("fill", "#ffff00");
+            var mouth = paper.path("M " + mouthX + "," + mouthY + "q l 17,0");
+        } else{//unhappy
+            faceShape.attr("fill", "#ff0000");
+            var mouth = paper.path("M " + mouthX + "," + mouthY + "q 9,-6 17,0");
+        }
+    });
 
 
     function search(){  //gets the url and does a get request
